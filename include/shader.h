@@ -1,6 +1,5 @@
 #ifndef _SHADER_H
 #define _SHADER_H
-#include <stdio.h>
 #include <stdbool.h>
 #include <glad/glad.h>
 #include <vmm/vec2.h>
@@ -10,7 +9,6 @@
 #include <vmm/mat4.h>
 #include <camera.h>
 
-typedef GLuint Shader;
 typedef struct _shader {
     GLuint program, fragment, vertex;
 } Shader;

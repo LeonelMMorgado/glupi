@@ -5,15 +5,19 @@
 #include <file_util.h>
 
 Shader *create_shader(char * vert_path, char * frag_path) {
+    if(!vert_path || !frag_path) return 0; //TODO: add way for frag only rendering? 
     int success;
     char infoLog[512];
 
     Shader *ret = calloc(1, sizeof(Shader));
-
+    if(!ret) return 0;
     //vertex shader creation
     ret->vertex = glCreateShader(GL_VERTEX_SHADER);
     const char * vert_txt = read_file(vert_path);
-    if(!vert_txt) return 0;
+    if(!vert_txt) {
+        free(ret);
+        return 0;
+    }
     glShaderSource(ret->vertex, 1, &vert_txt, NULL);
     glCompileShader(ret->vertex);
     glGetShaderiv(ret->vertex, GL_COMPILE_STATUS, &success);

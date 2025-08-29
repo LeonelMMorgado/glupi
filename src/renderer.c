@@ -33,8 +33,8 @@ void renderer_color(Renderer *renderer, Mesh *mesh, ColorRGBA color, Mat4 model)
 }
 
 void renderer_texture(Renderer *renderer, Mesh *mesh, Texture *texture, ColorRGBA color, Mat4 model) {
-    //FIXME:
-    //TODO:
+    //FIXME: make function function
+    //TODO: pass color to shader, pass right shader
     glBindVertexArray(renderer->vao.handle);
   
     glBindBuffer(GL_ARRAY_BUFFER, renderer->vbo.handle);
