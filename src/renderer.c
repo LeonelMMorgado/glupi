@@ -30,11 +30,24 @@ void renderer_set_shader(Renderer *renderer, Shader *shader) {
 void renderer_color(Renderer *renderer, Mesh *mesh, ColorRGBA color, Mat4 model) {
     //FIXME:
     //TODO:
+    glBindVertexArray(renderer->vao.handle);
+
+    glBindBuffer(GL_ARRAY_BUFFER, renderer->vbo.handle);
+    glBufferData(GL_ARRAY_BUFFER, mesh->vert_size * sizeof(Vertex), mesh->vertexes, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, vert_pos));
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, vert_color));
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, uv));
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, normal));
+    glEnableVertexAttribArray(0);
 }
 
 void renderer_texture(Renderer *renderer, Mesh *mesh, Texture *texture, ColorRGBA color, Mat4 model) {
-    //FIXME: make function function
-    //TODO: pass color to shader, pass right shader
+    //FIXME: make function work
+    //TODO: pass color & model to shader, pass right shader
     glBindVertexArray(renderer->vao.handle);
   
     glBindBuffer(GL_ARRAY_BUFFER, renderer->vbo.handle);
