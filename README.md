@@ -11,6 +11,8 @@ Define functions to run on initialize, update, draw and on exit. The program exp
 
 
 # TODO
+- button read
+
 - renderer
 
 - texture reader
