@@ -11,12 +11,10 @@ Define functions to run on initialize, update, draw and on exit. The program exp
 
 
 # TODO
-- renderer
+- octree
 
-- texture reader
+- voxel data
 
-- model reader
-
-- render quad
+- rewrite renderer
 
 - change names
