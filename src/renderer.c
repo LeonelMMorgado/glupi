@@ -38,16 +38,16 @@ void renderer_color(Renderer *renderer, Mesh *mesh, ColorRGBA color, Mat4 model)
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, vert_pos));
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, vert_color));
-    glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(1);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, uv));
-    glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(2);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, normal));
-    glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(3);
 }
 
-void renderer_texture(Renderer *renderer, Mesh *mesh, Texture *texture, ColorRGBA color, Mat4 model) {
+void renderer_texture(Renderer *renderer, Mesh *mesh, Texture *texture, Mat4 model) {
     //FIXME: make function work
-    //TODO: pass color & model to shader, pass right shader
+    //TODO: pass model to shader, pass right shader
     glBindVertexArray(renderer->vao.handle);
   
     glBindBuffer(GL_ARRAY_BUFFER, renderer->vbo.handle);
@@ -59,22 +59,23 @@ void renderer_texture(Renderer *renderer, Mesh *mesh, Texture *texture, ColorRGB
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, vert_pos));
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, vert_color));
-    glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(1);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, uv));
-    glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(2);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, normal));
-    glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(3);
   
     glBindTexture(GL_TEXTURE_2D, texture->handle);
 }
 
-void renderer_entity(Renderer *renderer, Entity *entity, Texture *texture) {
+void renderer_render_entity(Renderer *renderer, Entity *entity) {
     if(!entity) return;
-    if(!texture) {
+    //FIXME: change how colors are treated
+    if(!entity->text) {
       renderer_color(renderer, entity->mesh, DEBUG_COLOR, entity->model);
       return;
     }
-    renderer_texture(renderer, entity->mesh, texture, COLOR_WHITEA, entity->model);
+    renderer_texture(renderer, entity->mesh, entity->text, COLOR_WHITEA, entity->model);
 }
 
 void renderer_destroy(Renderer *renderer) {
