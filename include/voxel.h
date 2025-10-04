@@ -1,4 +1,4 @@
-#include <vmm/vec3.h>
+#include <vmm/ivec3.h>
 #include <color.h>
 
 typedef enum _vox_type {
@@ -13,13 +13,13 @@ typedef enum _vox_type {
 
 typedef struct _voxel {
     Voxel_Type type;
-    ColorRGBA color[4];
-    float hardness, opacity, refraction, color_chance[4];
+    float hardness, opacity, refraction;
 } Voxel;
 
 //Voxel voxels[] = {}; Array com blocos possíveis
 
 typedef struct _vox_obj {
     Voxel voxel;
-    Vector3 coord;
+    ColorRGBA color;
+    IVector3 coord;
 } Voxel_Object;

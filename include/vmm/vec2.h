@@ -1,10 +1,14 @@
 #ifndef _VEC2_H
 #define _VEC2_H
 
+#include <stdbool.h>
+
 typedef struct _vec2 {
     float x;
     float y;
 } Vector2;
+
+bool vec2_equal_vec(Vector2 a, Vector2 b);
 
 Vector2 vec2_scalar_add(Vector2 in, float scalar);
 Vector2 vec2_scalar_sub(Vector2 in, float scalar);

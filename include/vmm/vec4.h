@@ -1,12 +1,16 @@
 #ifndef _VEC4_H
 #define _VEC4_H
 
+#include <stdbool.h>
+
 typedef struct _vec4 {
     float x;
     float y;
     float z;
     float w;
 } Vector4;
+
+bool vec4_equal_vec(Vector4 a, Vector4 b);
 
 Vector4 vec4_scalar_add(Vector4 in, float scalar);
 Vector4 vec4_scalar_sub(Vector4 in, float scalar);
