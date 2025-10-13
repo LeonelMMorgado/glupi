@@ -20,6 +20,8 @@ IVector3 ivec3_scalar_div(IVector3 in, int scalar);
 IVector3 ivec3_negate(IVector3 in);
 IVector3 ivec3_add(IVector3 a, IVector3 b);
 IVector3 ivec3_sub(IVector3 a, IVector3 b);
+IVector3 ivec3_mul(IVector3 a, IVector3 b);
+IVector3 ivec3_div(IVector3 a, IVector3 b);
 
 float ivec3_dot(IVector3 a, IVector3 b);
 float ivec3_angle(IVector3 a, IVector3 b);

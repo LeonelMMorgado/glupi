@@ -13,10 +13,10 @@ FINAL = main
 CFLAGS = -g -Wall -I$(INC_DIR) -Llib
 
 ifeq ($(OS), Windows_NT)
-LDFLAGS = -lws2_32 -lpthread -lglfw3 -lgdi32 -lglad
+LDFLAGS = -L$(LIB_DIR) -lws2_32 -lpthread -lglfw3 -lgdi32 -lglad -lvmm
 REMOVE = rmdir /s /q
 else
-LDFLAGS = -lpthread -lm -lglfw3 -lgdi32 -lglad
+LDFLAGS = -L$(LIB_DIR) -lpthread -lm -lglfw3 -lglad -lvmm
 REMOVE = rm -rf
 endif
 

@@ -1,4 +1,5 @@
 #include <state.h>
+#include <stdlib.h>
 
 State *state_init(Window *window, func_state init, func_state tick, func_state update, func_state render, func_state destroy) {
     State *state = malloc(sizeof(State));

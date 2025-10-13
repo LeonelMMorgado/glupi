@@ -19,6 +19,8 @@ Vector3 vec3_scalar_div(Vector3 in, float scalar);
 Vector3 vec3_negate(Vector3 in);
 Vector3 vec3_add(Vector3 a, Vector3 b);
 Vector3 vec3_sub(Vector3 a, Vector3 b);
+Vector3 vec3_mul(Vector3 a, Vector3 b);
+Vector3 vec3_div(Vector3 a, Vector3 b);
 
 float vec3_dot(Vector3 a, Vector3 b);
 float vec3_angle(Vector3 a, Vector3 b);

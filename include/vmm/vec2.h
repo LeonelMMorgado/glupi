@@ -18,6 +18,8 @@ Vector2 vec2_scalar_div(Vector2 in, float scalar);
 Vector2 vec2_negate(Vector2 in);
 Vector2 vec2_add(Vector2 a, Vector2 b);
 Vector2 vec2_sub(Vector2 a, Vector2 b);
+Vector2 vec2_mul(Vector2 a, Vector2 b);
+Vector2 vec2_div(Vector2 a, Vector2 b);
 
 float vec2_dot(Vector2 a, Vector2 b);
 float vec2_angle(Vector2 a, Vector2 b);

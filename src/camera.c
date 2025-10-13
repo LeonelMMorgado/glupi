@@ -1,5 +1,7 @@
 #include <stdlib.h>
 #include <camera.h>
+#include <vmm/vec3.h>
+#include <vmm/mat4.h>
 #include <vmm/projection.h>
 
 Camera *camera_create(Window *win, CameraType type, Camera_Args args) {
