@@ -164,16 +164,17 @@ void octree_delete(Octree *tree) {
 // 
 // 
 //     /// move the ray position to the point of intersection with the bounding volume.
-//     ray.origin = vec3_scalar_mul(ray.direction, fmin(tmin, tmax));// intersectionDistance.Value;
+//     ray.origin = vec3_scalar_mul(ray.direction, fmin(tmin, tmax));
 // 
 //     /// get integer cell coordinates for the given position
 //     ///     leafSize is a Vector3 containing the dimensions of a leaf node in world-space coordinates
 //     ///     cellCount is a Vector3 containng the number of cells in each direction, or the size of the tree root divided by leafSize.
-// 
 //     Vector3 cell = Vector3.Min(((ray.origin - boundingBox.Min) / leafSize).Truncate(), cellCount - Vector3.One);
+//     Vector3 cell = vec3_min( ivec3_truncate_vec3( vec3_div( vec3_sub(ray.origin, tree->left_bot_back), leafSize(:1))), vec3_sub(cell_count, vec3_one()));
+//
 // 
 //     /// get the Vector3 where of the intersection point relative to the tree root.
-//     Vector3 pos = vec3_sub(ray.origin, boundingBox.Min);
+//     Vector3 pos = vec3_sub(ray.origin, tree->left_bot_back);
 // 
 //     /// get the bounds of the starting cell - leaf size offset by "pos"
 //     var cellBounds = GetCellBounds(cell);
@@ -225,7 +226,7 @@ void octree_delete(Octree *tree) {
 //     /// step across the bounding volume, generating a marker entity at each
 //     /// cell that we touch. Extension methods GreaterThanOrEEqual and LessThan
 //     /// ensure that we stay within the bounding volume.
-//     while (node!=NULL) {
+//     while (node != NULL) {
 //         /// if the current node isn't a leaf, find one.
 //         /// this version exits when it encounters the first leaf.
 //         if(!node.Leaf)
@@ -285,4 +286,4 @@ void octree_delete(Octree *tree) {
 //     return null;
 // 
 // }
-// 
+
