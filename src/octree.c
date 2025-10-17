@@ -166,12 +166,21 @@ Octree *_get_neighbour(Octree *node, IVector3 dir) {
     IVector3 node_size = _get_node_size(node);
 
     Octree *parent = node->parent;
-    while(parent && !_coord_in_space(ivec3_add(node->left_bot_back, dir), parent->left_bot_back, parent->right_top_front)) parent = parent->parent;
+    IVector3 coord_find = ivec3_add(node->left_bot_back, dir);
+    while(parent && !_coord_in_space(coord_find, parent->left_bot_back, parent->right_top_front)) parent = parent->parent;
     if(!parent) return NULL; //got out of octree
     IVector3 parent_size = _get_node_size(parent);
     while(!ivec3_equal_vec(parent_size, node_size)) {
-        //TODO: andar até chegar no vizinho 
+        if(!parent->children) break;
+        if(!_coord_in_space(coord_find, parent->left_bot_back, parent->right_top_front)) break;
+        for(int i = 0; i < CHILDREN_COUNT; i++){
+            if(_coord_in_space(coord_find, parent->children[i]->left_bot_back, parent->children[i]->right_top_front)) {
+                parent = parent->children[i];
+                break;
+            }
+        }
     }
+    return parent;
 }
 
 Octree *octree_dda(Octree *tree, Ray ray) {
