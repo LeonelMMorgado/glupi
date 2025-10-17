@@ -3,12 +3,35 @@
 
 #include <stdbool.h>
 
-typedef struct _vec2 {
-    float x;
-    float y;
+typedef union _vec2 {
+    struct {
+        float x;
+        float y;
+    };
+    struct {
+        float u;
+        float v;
+    };
+    struct {
+        float a;
+        float b;
+    };
 } Vector2;
 
+Vector2 vec2_float(float x, float y);
+Vector2 vec2_vec2(Vector2 vec);
+Vector2 vec2_zero(void);
+Vector2 vec2_one(void);
+Vector2 vec2_left(void);
+Vector2 vec2_right(void);
+Vector2 vec2_down(void);
+Vector2 vec2_up(void);
+
 bool vec2_equal_vec(Vector2 a, Vector2 b);
+Vector2 vec2_min(Vector2 a, Vector2 b);
+Vector2 vec2_max(Vector2 a, Vector2 b);
+Vector2 vec2_abs(Vector2 a);
+Vector2 vec2_sign(Vector2 a);
 
 Vector2 vec2_scalar_add(Vector2 in, float scalar);
 Vector2 vec2_scalar_sub(Vector2 in, float scalar);

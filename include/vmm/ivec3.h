@@ -4,13 +4,38 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-typedef struct _ivec3 {
-    int32_t x;
-    int32_t y;
-    int32_t z;
+typedef union _ivec3 {
+    struct {
+        int32_t x;
+        int32_t y;
+        int32_t z;
+    };
+    struct {
+        int32_t r;
+        int32_t g;
+        int32_t b;
+    };
 } IVector3;
 
+#include "vec3.h"
+
+IVector3 ivec3_int(int32_t x, int32_t y, int32_t z);
+IVector3 ivec3_ivec3(IVector3 vec);
+IVector3 ivec3_vec3(Vector3 vec);
+IVector3 ivec3_zero(void);
+IVector3 ivec3_one(void);
+IVector3 ivec3_left(void);
+IVector3 ivec3_right(void);
+IVector3 ivec3_back(void);
+IVector3 ivec3_forward(void);
+IVector3 ivec3_down(void);
+IVector3 ivec3_up(void);
+
 bool ivec3_equal_vec(IVector3 a, IVector3 b);
+IVector3 ivec3_min(IVector3 a, IVector3 b);
+IVector3 ivec3_max(IVector3 a, IVector3 b);
+IVector3 ivec3_abs(IVector3 a);
+IVector3 ivec3_sign(IVector3 a);
 
 IVector3 ivec3_scalar_add(IVector3 in, int scalar);
 IVector3 ivec3_scalar_sub(IVector3 in, int scalar);

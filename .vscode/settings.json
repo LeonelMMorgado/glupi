@@ -14,6 +14,10 @@
         "mat4.h": "c",
         "vao.h": "c",
         "color.h": "c",
-        "vbo.h": "c"
+        "vbo.h": "c",
+        "octree.h": "c",
+        "ivec3.h": "c",
+        "voxel.h": "c",
+        "ray.h": "c"
     }
 }
