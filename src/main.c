@@ -75,11 +75,11 @@ void destroy(State *state) {
 }
 
 int main(void) {
-    WinSettings settings = {
-        .inv_bg = false,
-        .inv_border = false,
+    WinSettings settings = (WinSettings){
         .name = "Hello World!",
-        .size = {SCR_WIDTH, SCR_HEIGHT}
+        .inv_border = false,
+        .inv_bg = false,
+        .size = vec2_float(SCR_WIDTH, SCR_HEIGHT)
     };
     Window *win = window_create(settings);
     if(!win->window) return -1;

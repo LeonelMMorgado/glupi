@@ -22,3 +22,4 @@ typedef struct _window {
 Window *window_create(WinSettings settings);
 
 #endif
+

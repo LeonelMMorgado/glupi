@@ -1,25 +1,20 @@
+#ifndef _VOXEL_H
+#define _VOXEL_H
 #include <vmm/ivec3.h>
 #include <color.h>
-
-typedef enum _vox_type {
-    VOX_AIR,
-    VOX_GRASS,
-    VOX_DIRT,
-    VOX_STONE,
-    VOX_WATER,
-
-    VOX_LAST,
-} Voxel_Type;
+#include <stdbool.h>
 
 typedef struct _voxel {
-    Voxel_Type type;
-    float hardness, opacity, refraction;
+    float refraction, illumination, k;
 } Voxel;
-
-//Voxel voxels[] = {}; Array com blocos possíveis
 
 typedef struct _vox_obj {
     Voxel voxel;
     ColorRGBA color;
     IVector3 coord;
 } Voxel_Object;
+
+bool voxel_compare(Voxel a, Voxel b);
+bool voxel_obj_compare(Voxel_Object a, Voxel_Object b);
+
+#endif
