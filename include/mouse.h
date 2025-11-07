@@ -15,3 +15,4 @@ void mouse_set_grabbed(Mouse mouse, bool grabbed);
 bool mouse_get_grabbed(Mouse mouse);
 
 #endif
+

@@ -30,3 +30,4 @@ void set_uniform_view_proj(Shader *program, ViewProj view_proj);
 void delete_shader(Shader *program);
 
 #endif
+

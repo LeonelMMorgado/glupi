@@ -30,3 +30,4 @@ void renderer_render_entity(Renderer *renderer, Entity *entity);
 void renderer_destroy(Renderer *renderer);
 
 #endif
+

@@ -6,9 +6,10 @@
 #include <window.h>
 #include <renderer.h>
 
-typedef void (*func_state)(struct _state *);
+typedef struct _state State;
+typedef void (*func_state)(State *);
 
-typedef struct _state {
+struct _state {
     Window *window;
     Renderer *renderer;
 
@@ -19,9 +20,10 @@ typedef struct _state {
 
     uint64_t last_second, frames, fps, last_frame, frame_delta, ticks, tps, tick_remainder;
     
-} State;
+};
 
 State *state_init(Window *window, func_state init, func_state tick, func_state update, func_state render, func_state destroy);
 void state_loop(State *state);
 
 #endif
+

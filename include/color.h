@@ -46,3 +46,4 @@ Vector3 get_rgb_vec3(ColorRGB color);
 Vector4 get_rgba_vec4(ColorRGBA color);
 
 #endif
+

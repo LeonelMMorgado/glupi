@@ -8,3 +8,4 @@
 GLFWwindow *initGL(WinSettings settings);
 
 #endif
+

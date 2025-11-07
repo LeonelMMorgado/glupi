@@ -6,3 +6,4 @@
 void processInput(GLFWwindow *window/*, Shader program*/);
 
 #endif
+

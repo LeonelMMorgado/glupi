@@ -24,3 +24,4 @@ void load_mesh_file(Mesh *mesh, const char *file);
 void destroy_mesh(Mesh *mesh);
 
 #endif
+
