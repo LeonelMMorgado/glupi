@@ -330,11 +330,11 @@ void _transform_node_to_texture(Octree *node,
         texture[base + 0] = get_red_rgba(node->voxel.color);
         texture[base + 1] = get_green_rgba(node->voxel.color);
         texture[base + 2] = get_blue_rgba(node->voxel.color);
-        texture[base + 3] = 255; //Flag for leaf node
-        texture[base + 4] = (uint8_t)(node->voxel.voxel.refraction * (255.0 / 3.0)); //(output end / input end) * input
-        texture[base + 5] = (uint8_t)(node->voxel.voxel.illumination * 255.0);
-        texture[base + 6] = (uint8_t)(node->voxel.voxel.k * 255.0);
-        texture[base + 7] = 0; //no use yet
+        texture[base + 3] = 255; //Flag for voxel
+        texture[base + 4] = (uint8_t)(node->voxel.voxel.refraction * (255.0 / 3.0)); //(output end / input end ) * input
+        texture[base + 5] = (uint8_t)(node->voxel.voxel.k * 255.0);
+        texture[base + 6] = (uint8_t)(node->voxel.voxel.illumination * 255.0);
+        texture[base + 7] = get_alpha_rgba(node->voxel.color);
         *next_free_block += LEAF_SIZE;
         return;
     }
