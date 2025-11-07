@@ -6,7 +6,7 @@
 #include <window.h>
 
 typedef struct _state State;
-typedef void (*func_state)(struct _state *);
+typedef void (*func_state)(State *);
 
 struct _state {
     Window *window;
@@ -24,3 +24,4 @@ State *state_init(Window *window, func_state init, func_state tick, func_state u
 void state_loop(State *state);
 
 #endif
+

@@ -17,3 +17,4 @@ void vbo_bind(VBO vbo);
 void vbo_buffer(VBO vbo, void *data, size_t offset, size_t count);
 
 #endif
+
