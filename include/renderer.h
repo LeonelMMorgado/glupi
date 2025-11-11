@@ -17,7 +17,7 @@ typedef struct _renderer {
     Vector4 clear_color;
 } Renderer;
 
-Renderer *renderer_init(Camera *camera, Shader *shader, Vector4 clear_color);
+Renderer *renderer_create(Camera *camera, Shader *shader, Vector4 clear_color);
 void renderer_set_camera(Renderer *renderer, Camera *camera);
 void renderer_set_shader(Renderer *renderer, Shader *shader);
 void renderer_delete(Renderer *renderer);

@@ -1,7 +1,7 @@
 #include <renderer.h>
 #include <stdlib.h>
 
-Renderer *renderer_init(Camera *camera, Shader *shader, Vector4 clear_color) {
+Renderer *renderer_create(Camera *camera, Shader *shader, Vector4 clear_color) {
     Renderer *r = malloc(sizeof(Renderer));
     r->camera = camera;
     r->shader = shader;
