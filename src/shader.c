@@ -4,13 +4,14 @@
 #include <shader.h>
 #include <file_util.h>
 
-Shader *create_shader(char * vert_path, char * frag_path) {
+Shader *shader_create(char * vert_path, char * frag_path, char *compute_path) {
     if(!vert_path || !frag_path) return 0; //TODO: add way for frag only rendering? 
     int success;
     char infoLog[512];
 
     Shader *ret = calloc(1, sizeof(Shader));
     if(!ret) return 0;
+
     //vertex shader creation
     ret->vertex = glCreateShader(GL_VERTEX_SHADER);
     const char * vert_txt = read_file(vert_path);
@@ -45,12 +46,34 @@ Shader *create_shader(char * vert_path, char * frag_path) {
         free(ret);
         return NULL;
     }
+
+    //compute shader creation
+    ret->compute = glCreateShader(GL_COMPUTE_SHADER);
+    const char * compute_txt = read_file(compute_path);
+    if(!vert_txt) {
+        free(ret);
+        return 0;
+    }
+    glShaderSource(ret->compute, 1, &compute_txt, NULL);
+    glCompileShader(ret->compute);
+    glGetShaderiv(ret->compute, GL_COMPILE_STATUS, &success);
+    if(!success)
+    {
+        glGetShaderInfoLog(ret->compute, 512, NULL, infoLog);
+        printf("ERROR::SHADER::COMPUTE::COMPILATION_FAILED\n");
+        printf("%s\n", infoLog);
+        free(ret);
+        return NULL;
+    }
     free((char*)frag_txt);
     free((char*)vert_txt);
+    free((char*)compute_txt);
+
     // link shaders
     ret->program = glCreateProgram();
     glAttachShader(ret->program, ret->vertex);
     glAttachShader(ret->program, ret->fragment);
+    glAttachShader(ret->program, ret->compute);
     glLinkProgram(ret->program);
     // check for linking errors
     glGetProgramiv(ret->program, GL_LINK_STATUS, &success);
@@ -62,6 +85,7 @@ Shader *create_shader(char * vert_path, char * frag_path) {
     }
     // glDeleteShader(ret->vertex);
     // glDeleteShader(ret->fragment);
+    // glDeleteShader(ret->compute);
     return ret;
 }
 
@@ -73,56 +97,56 @@ int _get_loc(Shader *program, char *name) {
     return glGetUniformLocation(program->program, name);
 }
 
-void set_uniform_int(Shader *program, char * name, int value) {
+void shader_set_uniform_int(Shader *program, char * name, int value) {
     glUniform1i(_get_loc(program, name), value);
 }
 
-void get_uniform_int(Shader *program, char * name, int * param) {
+void shader_get_uniform_int(Shader *program, char * name, int * param) {
     glGetUniformiv(program->program, _get_loc(program, name), param);
 }
 
-void set_uniform_uint(Shader *program, char * name, unsigned int value) {
+void shader_set_uniform_uint(Shader *program, char * name, unsigned int value) {
     glUniform1ui(_get_loc(program, name), value);
 }
 
-void get_uniform_uint(Shader *program, char * name, unsigned int * param) {
+void shader_get_uniform_uint(Shader *program, char * name, unsigned int * param) {
     glGetUniformuiv(program->program, _get_loc(program, name), param);
 }
 
-void set_uniform_float(Shader *program, char * name, float value) {
+void shader_set_uniform_float(Shader *program, char * name, float value) {
     glUniform1f(_get_loc(program, name), value);
 }
 
-void get_uniform_float(Shader *program, char * name, float * param) {
+void shader_get_uniform_float(Shader *program, char * name, float * param) {
     glGetUniformfv(program->program, _get_loc(program, name), param);
 }
 
-void set_uniform_vec2(Shader *program, char * name, Vector2 vec) {
+void shader_set_uniform_vec2(Shader *program, char * name, Vector2 vec) {
     glUniform2f(_get_loc(program, name), vec.x, vec.y);
 }
 
-void set_uniform_vec3(Shader *program, char * name, Vector3 vec) {
+void shader_set_uniform_vec3(Shader *program, char * name, Vector3 vec) {
     glUniform3f(_get_loc(program, name), vec.x, vec.y, vec.z);
 }
 
-void set_uniform_vec4(Shader *program, char * name, Vector4 vec) {
+void shader_set_uniform_vec4(Shader *program, char * name, Vector4 vec) {
     glUniform4f(_get_loc(program, name), vec.x, vec.y, vec.z, vec.w);
 }
 
-void set_uniform_mat3(Shader *program, char * name, Mat3 mat) {
+void shader_set_uniform_mat3(Shader *program, char * name, Mat3 mat) {
     glUniformMatrix3fv(_get_loc(program, name), 1, GL_FALSE, mat.m);
 }
 
-void set_uniform_mat4(Shader *program, char * name, Mat4 mat) {
+void shader_set_uniform_mat4(Shader *program, char * name, Mat4 mat) {
     glUniformMatrix4fv(_get_loc(program, name), 1, GL_FALSE, mat.m);
 }
 
-void set_uniform_view_proj(Shader *program, ViewProj view_proj) {
-    set_uniform_mat4(program, "view", view_proj.view);
-    set_uniform_mat4(program, "projection", view_proj.proj);
+void shader_set_uniform_view_proj(Shader *program, ViewProj view_proj) {
+    shader_set_uniform_mat4(program, "view", view_proj.view);
+    shader_set_uniform_mat4(program, "projection", view_proj.proj);
 }
 
-void delete_shader(Shader *program) {
+void shader_delete(Shader *program) {
     glDeleteProgram(program->program);
     glDeleteShader(program->fragment);
     glDeleteShader(program->vertex);

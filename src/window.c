@@ -8,3 +8,7 @@ Window *window_create(WinSettings settings) {
     window->window = initGL(settings);
     return window;
 }
+
+void window_delete(Window *window) {
+    free(window);
+}

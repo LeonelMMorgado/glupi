@@ -42,5 +42,6 @@ typedef union _camera_args {
 } Camera_Args;
 
 Camera *camera_create(Window *win, CameraType type, Camera_Args args);
+void camera_delete(Camera *camera);
 
 #endif
