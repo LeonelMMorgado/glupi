@@ -56,3 +56,5 @@ dkms.conf
 
 # lsp config file
 compile_flags.txt
+
+.vscode
