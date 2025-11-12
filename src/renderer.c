@@ -17,8 +17,10 @@ void renderer_set_shader(Renderer *renderer, Shader *shader) {
     renderer->shader = shader;
 }
 
-void renderer_delete(Renderer *renderer) {
-    camera_delete(renderer->camera);
-    shader_delete(renderer->shader);
-    free(renderer);
+void renderer_delete(Renderer **renderer) {
+    if(!*renderer) return;
+    camera_delete(&(*renderer)->camera);
+    shader_delete(&(*renderer)->shader);
+    free(*renderer);
+    *renderer = NULL;
 }

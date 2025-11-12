@@ -3,7 +3,7 @@
 
 #include <GLFW/glfw3.h>
 
-void processInput(GLFWwindow *window/*, Shader program*/);
+void process_input(GLFWwindow *window/*, Shader program*/);
 
 #endif
 

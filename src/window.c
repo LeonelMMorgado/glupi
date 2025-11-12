@@ -9,6 +9,8 @@ Window *window_create(WinSettings settings) {
     return window;
 }
 
-void window_delete(Window *window) {
-    free(window);
+void window_delete(Window **window) {
+    if(!*window) return;
+    free(*window);
+    *window = NULL;
 }

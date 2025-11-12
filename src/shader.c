@@ -4,7 +4,7 @@
 #include <shader.h>
 #include <file_util.h>
 
-Shader *shader_create(char * vert_path, char * frag_path, char *compute_path) {
+Shader *shader_create(char * vert_path, char * frag_path) {
     if(!vert_path || !frag_path) return 0; //TODO: add way for frag only rendering? 
     int success;
     char infoLog[512];
@@ -47,33 +47,13 @@ Shader *shader_create(char * vert_path, char * frag_path, char *compute_path) {
         return NULL;
     }
 
-    //compute shader creation
-    ret->compute = glCreateShader(GL_COMPUTE_SHADER);
-    const char * compute_txt = read_file(compute_path);
-    if(!vert_txt) {
-        free(ret);
-        return 0;
-    }
-    glShaderSource(ret->compute, 1, &compute_txt, NULL);
-    glCompileShader(ret->compute);
-    glGetShaderiv(ret->compute, GL_COMPILE_STATUS, &success);
-    if(!success)
-    {
-        glGetShaderInfoLog(ret->compute, 512, NULL, infoLog);
-        printf("ERROR::SHADER::COMPUTE::COMPILATION_FAILED\n");
-        printf("%s\n", infoLog);
-        free(ret);
-        return NULL;
-    }
     free((char*)frag_txt);
     free((char*)vert_txt);
-    free((char*)compute_txt);
 
     // link shaders
     ret->program = glCreateProgram();
     glAttachShader(ret->program, ret->vertex);
     glAttachShader(ret->program, ret->fragment);
-    glAttachShader(ret->program, ret->compute);
     glLinkProgram(ret->program);
     // check for linking errors
     glGetProgramiv(ret->program, GL_LINK_STATUS, &success);
@@ -89,7 +69,7 @@ Shader *shader_create(char * vert_path, char * frag_path, char *compute_path) {
     return ret;
 }
 
-void use_shader(Shader *program) {
+void shader_use(Shader *program) {
     glUseProgram(program->program);
 }
 
@@ -146,8 +126,11 @@ void shader_set_uniform_view_proj(Shader *program, ViewProj view_proj) {
     shader_set_uniform_mat4(program, "projection", view_proj.proj);
 }
 
-void shader_delete(Shader *program) {
-    glDeleteProgram(program->program);
-    glDeleteShader(program->fragment);
-    glDeleteShader(program->vertex);
+void shader_delete(Shader **program) {
+    if(!*program) return;
+    glDeleteShader((*program)->fragment);
+    glDeleteShader((*program)->vertex);
+    glDeleteProgram((*program)->program);
+    free(*program);
+    *program = NULL;
 }

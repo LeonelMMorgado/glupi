@@ -20,7 +20,7 @@ typedef struct _window {
 } Window;
 
 Window *window_create(WinSettings settings);
-void window_delete(Window *window);
+void window_delete(Window **window);
 
 #endif
 

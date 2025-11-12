@@ -1,7 +1,7 @@
 #include <state.h>
 #include <stdlib.h>
 
-State *state_init(Window *window, Renderer *renderer, func_state init, func_state tick, func_state update, func_state render, func_state destroy) {
+State *state_create(Window *window, Renderer *renderer, func_state init, func_state tick, func_state update, func_state render, func_state destroy) {
     State *state = malloc(sizeof(State));
     state->init = init;
     state->destroy = destroy;
@@ -23,8 +23,10 @@ void state_loop(State *state) {
     state->destroy(state);
 }
 
-void state_delete(State *state) {
-    window_delete(state->window);
-    renderer_delete(state->renderer);
-    free(state);
+void state_delete(State **state) {
+    if(!*state) return;
+    window_delete(&(*state)->window);
+    renderer_delete(&(*state)->renderer);
+    free(*state);
+    *state = NULL;
 }

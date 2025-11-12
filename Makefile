@@ -16,7 +16,7 @@ ifeq ($(OS), Windows_NT)
 LDFLAGS = -L$(LIB_DIR) -lws2_32 -lpthread -lglfw3 -lgdi32 -lglad -lvmm
 REMOVE = rmdir /s /q
 else
-LDFLAGS = -L$(LIB_DIR) -lpthread -lm -lglfw3 -lglad -lvmm
+LDFLAGS = -L$(LIB_DIR) -lpthread -lm -lglfw -lglad -lvmm
 REMOVE = rm -rf
 endif
 

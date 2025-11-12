@@ -36,6 +36,8 @@ Camera *camera_create(Window *win, CameraType type, Camera_Args args) {
     return c;
 }
 
-void camera_delete(Camera *camera) {
-    free(camera);
+void camera_delete(Camera **camera) {
+    if(!*camera) return;
+    free(*camera);
+    *camera = NULL;
 }

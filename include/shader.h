@@ -10,11 +10,11 @@
 #include <camera.h>
 
 typedef struct _shader {
-    GLuint program, fragment, vertex, compute;
+    GLuint program, fragment, vertex;
 } Shader;
 
-Shader *shader_create(char * vert_path, char * frag_path, char *compute_path);
-void shader_user(Shader *program);
+Shader *shader_create(char * vert_path, char * frag_path);
+void shader_use(Shader *program);
 void shader_set_uniform_int(Shader *program, char * name, int value);
 void shader_get_uniform_int(Shader *program, char * name, int * param);
 void shader_set_uniform_uint(Shader *program, char * name, unsigned int value);
@@ -27,7 +27,7 @@ void shader_set_uniform_vec4(Shader *program, char * name, Vector4 vec);
 void shader_set_uniform_mat3(Shader *program, char * name, Mat3 mat);
 void shader_set_uniform_mat4(Shader *program, char * name, Mat4 mat);
 void shader_set_uniform_view_proj(Shader *program, ViewProj view_proj);
-void shader_delete(Shader *program);
+void shader_delete(Shader **program);
 
 #endif
 
