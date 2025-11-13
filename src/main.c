@@ -12,68 +12,67 @@
 #define SCR_WIDTH 800
 #define SCR_HEIGHT 600
 
-// int main(void) {
-//     
-//     // GLFWwindow *window = initGL("Hello World", false);
-//     // if(!window) return -1;
-// 
-//     // build and compile our shader program
-//     // ------------------------------------
-//     Shader program = create_shader("shaders/vertex.glsl", "shaders/fragment.glsl");
-//     if(!program) {
-//         printf("Stopping execution after shader program error\n");
-//         return -1;
-//     }
-//     glUseProgram(program);
-// 
-//     // render loop
-//     // -----------
-//     // while (!glfwWindowShouldClose(window)) {
-//         // input
-//         //=
-//         processInput(window/*, program*/);
-//         
-//         // render
-//         //=
-//         glClearColor(0.25f, 0.25f, 0.25f, 0.0f);
-//         glClear(GL_COLOR_BUFFER_BIT);
-//         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
-//         // -------------------------------------------------------------------------------
-//         glfwSwapBuffers(window);
-//         glfwPollEvents();
-//     // }
-// 
-//     // de-allocate all resources once they've outlived their purpose:
-//     // ------------------------------------------------------------------------
-//     glDeleteProgram(program);
-// 
-//     // glfw: terminate, clearing all previously allocated GLFW resources.
-//     // ------------------------------------------------------------------
-//     // glfwTerminate();
-//     // return 0;
-// }
+GLuint compute_program;
+float now, last_time;
 
 void init(State *state) {
-    shader_use(state->renderer->shader);
+    GLuint compute_shader = make_shader("shaders/compute.glsl", GL_COMPUTE_SHADER);
+    compute_program = glCreateProgram();
+    glAttachShader(compute_program, compute_shader);
+    glLinkProgram(compute_program); //FIXME: check err
+
+    last_time = 0;
 }
 
 void tick(State *state) {
+    //TODO: HERE for input
+    process_input(state->window->window);
     return;
 }
 
 void update(State *state) {
-    process_input(state->window->window);
+    now = (float)glfwGetTime();
+    printf("FPS: %f\n", 1.0f / (now - last_time));
+    last_time = now;
 }
 
 void render(State *state) {
-    glClearColor(01,01,01,01);
+    glUseProgram(compute_program);
+    //Vincular recursos
+    glBindImageTexture(0, outputTexture, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA8);
+    glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 2, ssbo_voxels);
+    // Dispara as threads do compute shader.
+    //  Dividimos o tamanho da tela pelo tamanho do grupo de trabalho definido no shader.
+    //  Se o tamanho do grupo for 8x8, por exemplo:
+    glDispatchCompute(SCR_WIDTH / 8, SCR_HEIGHT / 8, 1);
+
+    glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
+
+    // Desenhar o quad na tela
+    int width, height;
+    glfwGetFramebufferSize(state->window, &width, &height);
+    glViewport(0, 0, width, height);
     glClear(GL_COLOR_BUFFER_BIT);
+
+    shader_use(state->renderer->shader);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, outputTexture);
+
+    glBindVertexArray(quadVAO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadEBO);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
     glfwSwapBuffers(state->window->window);
     glfwPollEvents();
 }
 
 void destroy(State *state) {
     //deallocate all resources
+    glDeleteVertexArrays(1, &quadVAO);
+    glDeleteBuffers(1, &quadEBO);
+    glDeleteBuffers(1, &ssbo_voxels);
+    gldeleteTextures(1, &outputTexture);
+    glDeleteProgram(compute_program);
     state_delete(&state);
     glfwTerminate();
 }

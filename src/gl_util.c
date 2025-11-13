@@ -45,3 +45,4 @@ GLFWwindow *initGL(WinSettings settings) {
     }
     return window;
 }
+

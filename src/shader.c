@@ -4,51 +4,38 @@
 #include <shader.h>
 #include <file_util.h>
 
+GLuint make_shader(const char*path, int enum) {
+    if(!path) return 0;
+    int success;
+    char info_log[512];
+
+    GLuint shader = glCreateShader(enum);
+    char *shader_txt = read_file(path);
+    if(!shader_txt) return 0;
+    glShaderSource(shader, 1, &shader_txt, NULL);
+    glCompileShader(shader);
+    glGetShaderiv(shader), GL_COMPILE_STATUS, &success);
+    if(!success) {
+        glGetShaderInfoLog(shader, 512, NULL, info_log);
+        printf("ERROR::SHADER::COMPILATION_FAILED\n");
+        printf("%s\n", info_log);
+        return 0;
+    }
+    free(shader_txt);
+    return shader;
+}
+
 Shader *shader_create(char * vert_path, char * frag_path) {
     if(!vert_path || !frag_path) return 0; //TODO: add way for frag only rendering? 
-    int success;
-    char infoLog[512];
 
     Shader *ret = calloc(1, sizeof(Shader));
     if(!ret) return 0;
 
     //vertex shader creation
-    ret->vertex = glCreateShader(GL_VERTEX_SHADER);
-    const char * vert_txt = read_file(vert_path);
-    if(!vert_txt) {
-        free(ret);
-        return 0;
-    }
-    glShaderSource(ret->vertex, 1, &vert_txt, NULL);
-    glCompileShader(ret->vertex);
-    glGetShaderiv(ret->vertex, GL_COMPILE_STATUS, &success);
-    if(!success)
-    {
-        glGetShaderInfoLog(ret->vertex, 512, NULL, infoLog);
-        printf("ERROR::SHADER::VERTEX::COMPILATION_FAILED\n");
-        printf("%s\n", infoLog);
-        free(ret);
-        return NULL;
-    }
-    
-    //fragment shader creation
-    ret->fragment = glCreateShader(GL_FRAGMENT_SHADER);
-    const char * frag_txt = read_file(frag_path);
-    if(!frag_txt) return 0;
-    glShaderSource(ret->fragment, 1, &frag_txt, NULL);
-    glCompileShader(ret->fragment);
-    glGetShaderiv(ret->fragment, GL_COMPILE_STATUS, &success);
-    if(!success)
-    {
-        glGetShaderInfoLog(ret->fragment, 512, NULL, infoLog);
-        printf("ERROR::SHADER::VERTEX::COMPILATION_FAILED\n");
-        printf("%s\n", infoLog);
-        free(ret);
-        return NULL;
-    }
+    ret->vertex = make_shader(vert_path, GL_VERTEX_SHADER);
 
-    free((char*)frag_txt);
-    free((char*)vert_txt);
+    //fragment shader creation
+    ret->fragment = make_shader(frag_path, GL_FRAGMENT_SHADER);
 
     // link shaders
     ret->program = glCreateProgram();

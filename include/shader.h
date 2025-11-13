@@ -13,6 +13,7 @@ typedef struct _shader {
     GLuint program, fragment, vertex;
 } Shader;
 
+GLuint make_shader(const char *path, int shader_type); //FIXME: change type
 Shader *shader_create(char * vert_path, char * frag_path);
 void shader_use(Shader *program);
 void shader_set_uniform_int(Shader *program, char * name, int value);
