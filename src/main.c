@@ -55,6 +55,7 @@ void init(State *state) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glBindImageTexture(0, output_texture, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA8);
 
     // Room parameters (positioned near the center of the world)
     int roomMinX = 12;
@@ -174,6 +175,9 @@ void init(State *state) {
 
     glBindVertexArray(0);
 
+    shader_use(state->renderer->shader);
+    glUniform1i(glGetUniformLocation(state->renderer->shader->program, "screenTexture"), 0);
+
     last_time = 0;
 }
 
@@ -214,6 +218,7 @@ void render(State *state) {
     glBindVertexArray(quadVAO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadEBO);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
 
     glfwSwapBuffers(state->window->window);
     glfwPollEvents();
