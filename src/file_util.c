@@ -10,7 +10,7 @@ FILE * open_file(const char * path) {
     return file;
 }
 
-const char * file_to_char(FILE * file) {
+char * file_to_char(FILE * file) {
     if(!file) return NULL;
     int read_size = 100;
     int counter = 0;
@@ -40,6 +40,6 @@ const char * file_to_char(FILE * file) {
     return read_inf;
 }
 
-const char * read_file(const char * path) {
+char * read_file(const char * path) {
     return file_to_char(open_file(path));
 }

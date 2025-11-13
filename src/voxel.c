@@ -1,6 +1,15 @@
 #include <voxel.h>
 #include <vmm/ivec3.h>
 
+Voxel voxel_create(float refraction, float illumination, float k) {
+    return (Voxel){.refraction = refraction, .illumination = illumination, .k = k};
+}
+
+Voxel_Object voxel_obj_create(Voxel voxel, ColorRGBA color, IVector3 coord) {
+    return (Voxel_Object){.voxel = voxel, .color = color, .coord = coord};
+}
+
+
 bool voxel_compare(Voxel a, Voxel b) {
     if(a.refraction != b.refraction) return false;
     if(a.illumination != b.illumination) return false;
