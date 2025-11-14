@@ -21,7 +21,7 @@
 GLuint compute_program;
 float now, last_time;
 
-GLuint output_texture, ssbo_voxels, quadVAO, quadEBO;
+GLuint output_texture, ssbo_voxels, quadVBO, quadVAO, quadEBO;
 
 typedef enum Voxel_Type {
     VOX_GRASS,
@@ -120,7 +120,6 @@ void init(State *state) {
         }
     }
 
-    GLuint ssbo_voxels;
     glGenBuffers(1, &ssbo_voxels);
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, ssbo_voxels);
     glBufferData(GL_SHADER_STORAGE_BUFFER, WORLD_VOLUME * sizeof(Voxel_Object), voxel_data, GL_STATIC_DRAW);
@@ -145,7 +144,6 @@ void init(State *state) {
 
 
     // Configurar o Quad renderizado na tela
-    GLuint quadVAO, quadVBO, quadEBO;
 
     Vector2 quad_vertices[] = {
         {{ 1.0f, 1.0f }},

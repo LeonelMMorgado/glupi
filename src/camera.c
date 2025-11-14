@@ -36,6 +36,14 @@ Camera *camera_create(Window *win, CameraType type, Camera_Args args) {
     return c;
 }
 
+void camera_update_pos(Camera *camera, Vector3 new_pos) {
+
+}
+
+void camera_update_view_proj(Camera *camera, Window *win) {
+
+}
+
 void camera_delete(Camera **camera) {
     if(!*camera) return;
     free(*camera);
