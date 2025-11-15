@@ -3,8 +3,8 @@
 
 #include <stdio.h>
 
-const char * file_to_char(FILE * file);
-const char * read_file(const char * path);
+char * file_to_char(FILE * file);
+char * read_file(const char * path);
 
 #endif
 

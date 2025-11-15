@@ -38,6 +38,7 @@ Camera *camera_create(Window *win, CameraType type, Camera_Args args) {
     return c;
 }
 
+
 void camera_move(Camera *camera, Vector3 movement) {
     camera_update_pos(camera, vec3_add(camera->position, movement));
 }

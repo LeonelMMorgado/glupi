@@ -14,7 +14,11 @@ typedef struct _vox_obj {
     IVector3 coord;
 } Voxel_Object;
 
+Voxel voxel_create(float refraction, float illumination, float k);
+Voxel_Object voxel_obj_create(Voxel voxel, ColorRGBA color, IVector3 coord);
+
 bool voxel_compare(Voxel a, Voxel b);
 bool voxel_obj_compare(Voxel_Object a, Voxel_Object b);
 
 #endif
+
