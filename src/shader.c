@@ -104,11 +104,11 @@ void shader_set_uniform_vec4(Shader *program, const char * name, Vector4 vec) {
 }
 
 void shader_set_uniform_mat3(Shader *program, const char * name, Mat3 mat) {
-    glUniformMatrix3fv(_get_loc(program, name), 1, GL_FALSE, mat.m);
+    glUniformMatrix3fv(_get_loc(program, name), 1, GL_FALSE, mat.mat);
 }
 
 void shader_set_uniform_mat4(Shader *program, const char * name, Mat4 mat) {
-    glUniformMatrix4fv(_get_loc(program, name), 1, GL_FALSE, mat.m);
+    glUniformMatrix4fv(_get_loc(program, name), 1, GL_FALSE, mat.mat);
 }
 
 void shader_set_uniform_view_proj(Shader *program, ViewProj view_proj) {

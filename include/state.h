@@ -19,7 +19,7 @@ struct _state {
     Button keyboard_keys[GLFW_KEY_LAST];
 
     uint64_t last_second, frames, fps, last_frame, frame_delta, ticks, tps, tick_remainder;
-    
+    float now, last_time, delta_time;
 };
 
 State *state_create(Window *window, Renderer *renderer, func_state init, func_state tick, func_state update, func_state render, func_state destroy);

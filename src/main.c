@@ -5,10 +5,10 @@
 #include <time.h>
 #include <math.h>
 #include <gl_util.h>
-#include <input.h>
 #include <shader.h>
 #include <state.h>
 #include <voxel.h>
+#include <vmm/ivec2.h>
 
 #define SCR_WIDTH 800
 #define SCR_HEIGHT 600
@@ -21,7 +21,7 @@
 GLuint compute_program;
 float now, last_time;
 
-GLuint output_texture, ssbo_voxels, quadVBO, quadVAO, quadEBO;
+GLuint output_texture, ssbo_voxels, quadVBO, quadVAO, quadEBO, uboCamera;
 
 typedef enum Voxel_Type {
     VOX_GRASS,
@@ -41,7 +41,41 @@ const Voxel voxels[] = {
     {1.38f, 0.0f, 1.0f},
 };
 
+typedef struct CameraData {
+    Mat4 invProjection;
+    Mat4 invView;
+    Vector3 cameraPos;
+} CameraData;
+
+
+void process_input(State *state) {
+    double mouse_pos_x, mouse_pos_y;
+    glfwGetCursorPos(state->window->window, &mouse_pos_x, &mouse_pos_y);
+    IVector2 mouse_pos = ivec2_int((int)floor(mouse_pos_x), (int)floor(mouse_pos_y));
+    if(!ivec2_equal_vec(mouse_pos, state->mouse.position)) {
+        state->mouse.delta = ivec2_sub(mouse_pos, state->mouse.position);
+        state->mouse.position = mouse_pos;
+        camera_yaw_pitch(state->renderer->camera, vec2_ivec2(state->mouse.delta));
+    }
+
+    if(glfwGetKey(state->window->window, GLFW_KEY_W) == GLFW_PRESS)
+        camera_move(state->renderer->camera, vec3_scalar_mul(vec3_forward(), state->delta_time));
+    if(glfwGetKey(state->window->window, GLFW_KEY_A) == GLFW_PRESS)
+        camera_move(state->renderer->camera, vec3_scalar_mul(vec3_left(), state->delta_time));
+    if(glfwGetKey(state->window->window, GLFW_KEY_S) == GLFW_PRESS)
+        camera_move(state->renderer->camera, vec3_scalar_mul(vec3_back(), state->delta_time));
+    if(glfwGetKey(state->window->window, GLFW_KEY_D) == GLFW_PRESS)
+        camera_move(state->renderer->camera, vec3_scalar_mul(vec3_right(), state->delta_time));
+    if(glfwGetKey(state->window->window, GLFW_KEY_SPACE) == GLFW_PRESS)
+        camera_move(state->renderer->camera, vec3_scalar_mul(vec3_up(), state->delta_time));
+    if(glfwGetKey(state->window->window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+        camera_move(state->renderer->camera, vec3_scalar_mul(vec3_down(), state->delta_time));
+
+    camera_update_view(state->renderer->camera);
+}
+
 void init(State *state) {
+    mouse_set_grabbed(state->window, true);
     GLuint compute_shader = make_shader("shaders/compute.glsl", GL_COMPUTE_SHADER);
     compute_program = glCreateProgram();
     glAttachShader(compute_program, compute_shader);
@@ -102,7 +136,6 @@ void init(State *state) {
         }
     }
 
-    // Create a red jelly sphere inside the room
     int cx = (roomMinX + roomMaxX) / 2;
     int cz = (roomMinZ + roomMaxZ) / 2;
     int cy = floorY + 6;
@@ -124,23 +157,14 @@ void init(State *state) {
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, ssbo_voxels);
     glBufferData(GL_SHADER_STORAGE_BUFFER, WORLD_VOLUME * sizeof(Voxel_Object), voxel_data, GL_STATIC_DRAW);
 
-    // Vincula o buffer ao ponto de ligação 2 (corresponderá ao binding no shader)
     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 2, ssbo_voxels);
 
-    //// UBO para a câmera
-    //struct CameraData {
-    //    glm::mat4 invProjection;
-    //    glm::mat4 invView;
-    //    glm::vec3 cameraPos;
-    //};
+    glGenBuffers(1, &uboCamera);
+    glBindBuffer(GL_UNIFORM_BUFFER, uboCamera);
+    glBufferData(GL_UNIFORM_BUFFER, sizeof(CameraData), NULL, GL_DYNAMIC_DRAW);
+    glBindBufferBase(GL_UNIFORM_BUFFER, 1, uboCamera);
 
-    //GLuint uboCamera;
-    //glGenBuffers(1, &uboCamera);
-    //glBindBuffer(GL_UNIFORM_BUFFER, uboCamera);
-    //glBufferData(GL_UNIFORM_BUFFER, sizeof(CameraData), NULL, GL_DYNAMIC_DRAW);
-    //glBindBufferBase(GL_UNIFORM_BUFFER, 1, uboCamera);
-
-    //glBindBuffer(GL_UNIFORM_BUFFER, 0);
+    glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
 
     // Configurar o Quad renderizado na tela
@@ -180,30 +204,27 @@ void init(State *state) {
 }
 
 void tick(State *state) {
-    //TODO: HERE for input
-    process_input(state->window->window);
+    process_input(state);
     return;
 }
 
 void update(State *state) {
-    now = (float)glfwGetTime();
-    printf("FPS: %f\n", 1.0f / (now - last_time));
-    last_time = now;
+    state->now = (float)glfwGetTime();
+    state->delta_time = state->now - state->last_time;
+    printf("FPS: %f\n", 1.0f / state->delta_time);
+    state->last_time = state->now;
 }
 
 void render(State *state) {
     glUseProgram(compute_program);
-    //Vincular recursos
+
     glBindImageTexture(0, output_texture, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_RGBA8);
     glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 2, ssbo_voxels);
-    // Dispara as threads do compute shader.
-    //  Dividimos o tamanho da tela pelo tamanho do grupo de trabalho definido no shader.
-    //  Se o tamanho do grupo for 8x8, por exemplo:
+
     glDispatchCompute(SCR_WIDTH / 8, SCR_HEIGHT / 8, 1);
 
     glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
 
-    // Desenhar o quad na tela
     int width, height;
     glfwGetFramebufferSize(state->window->window, &width, &height);
     glViewport(0, 0, width, height);
