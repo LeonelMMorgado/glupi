@@ -8,7 +8,7 @@
 Camera *camera_create(Window *win, CameraType type, Camera_Args args) {
     Camera *c = calloc(1, sizeof(Camera));
     c->type = type;
-    c->position = (Vector3){0};
+    c->position = (Vector3){.x = 32.0, .y = 32.0, .z = 32.0};
     if(type == ORTHOGRAPHIC_CAMERA) {
         c->camera_o.min = vec2_float(args.min_max.x, args.min_max.y);
         c->camera_o.max = vec2_float(args.min_max.z, args.min_max.w);

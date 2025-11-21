@@ -54,7 +54,4 @@ dkms.conf
 # debug information files
 *.dwo
 
-# lsp config file
-compile_flags.txt
-
 .vscode

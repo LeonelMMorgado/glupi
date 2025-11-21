@@ -32,4 +32,4 @@ $(OBJ_DIR):
 clean_all: clean
 
 clean:
-	$(REMOVE) $(OBJ_DIR)
+	$(REMOVE) $(OBJ_DIR) $(FINAL)

@@ -205,7 +205,6 @@ void init(State *state) {
 
 void tick(State *state) {
     process_input(state);
-    return;
 }
 
 void update(State *state) {

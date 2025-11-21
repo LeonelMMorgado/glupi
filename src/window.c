@@ -6,6 +6,7 @@
 Window *window_create(WinSettings settings) {
     Window *window = malloc(sizeof(Window));
     window->window = initGL(settings);
+    //TODO: pass window pointer glfw
     return window;
 }
 

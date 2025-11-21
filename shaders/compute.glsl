@@ -459,6 +459,7 @@ void main() {
     vec4 finalColor = raymarching_fromDir(cameraPos, worldDir);
 
     if (length(finalColor.rgb) == 0.0) finalColor = skyColor;
+    finalColor = cameraPos.y == 32.0 ? vec4(1.0) : vec4(0.0);
 
     imageStore(destTex, pixel_coords, finalColor);
 }
