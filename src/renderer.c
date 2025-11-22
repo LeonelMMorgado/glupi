@@ -7,7 +7,7 @@
 #define DEBUG_COLOR COLOR_PURPLEA
 #endif
 
-Renderer *renderer_init(Camera *camera, Shader *shader, Vector4 clear_color) {
+Renderer *renderer_init(Camera *camera, Shader *shader, ColorRGBA clear_color) {
     Renderer *r = calloc(1, sizeof(Renderer));
     r->camera = camera;
     r->shader = shader;
@@ -71,17 +71,21 @@ void renderer_texture(Renderer *renderer, Mesh *mesh, Texture *texture, Mat4 mod
 void renderer_render_entity(Renderer *renderer, Entity *entity) {
     if(!entity) return;
     //FIXME: change how colors are treated
-    if(!entity->text) {
+    if(!entity->tex) {
       renderer_color(renderer, entity->mesh, DEBUG_COLOR, entity->model);
       return;
     }
     renderer_texture(renderer, entity->mesh, entity->text, COLOR_WHITEA, entity->model);
 }
 
-void renderer_destroy(Renderer *renderer) {
-    // FIXME: user should call destroy on camera and shader?
+void renderer_destroy(Renderer **renderer) {
+    if(!renderer) return;
+    if(!*renderer) return;
     vao_delete(renderer->vao);
     vbo_delete(renderer->vbo);
     vbo_delete(renderer->ibo);
-    free(renderer);
+    if((*renderer)->shader) shader_destroy(&((*renderer)->shader));
+    if((*renderer)->camera) camera_destroy(&((*renderer)->camera));
+    free(*renderer);
+    *renderer = NULL;
 }

@@ -71,7 +71,6 @@ void render(State *state) {
 
 void destroy(State *state) {
     //deallocate all resources
-    glDeleteProgram(state->renderer->program);
     glfwTerminate();
 }
 
@@ -82,8 +81,8 @@ int main(void) {
         .name = "Hello World!",
         .size = {SCR_WIDTH, SCR_HEIGHT}
     };
-    Window win = window_create(settings);
-    if(!win.window) return -1;
+    Window *win = window_create(settings);
+    if(!win) return -1;
     State state = state_init(&win, &init, &tick, &update, &render, &destroy);
     state_loop(&state);
 }

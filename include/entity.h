@@ -10,10 +10,10 @@ typedef struct _entity {
     Vector3 position, rotation, scale;
     Mat4 model;
     Mesh *mesh;
-    Texture *text;
+    Texture *tex;
 } Entity;
 
-Entity *init_entity(Vector3 pos, Vector3 rot, Vector3 scale, Mesh *mesh);
-void destroy_entity();
+Entity *entity_create(Vector3 pos, Vector3 rot, Vector3 scale, Mesh *mesh, Texture *tex);
+void entity_destroy(Entity **ent);
 
 #endif

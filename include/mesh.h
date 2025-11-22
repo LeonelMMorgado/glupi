@@ -18,10 +18,10 @@ typedef struct _mesh {
     Vector3 *indexes; size_t index_size;
 } Mesh;
 
-Mesh *alloc_mesh(size_t vert_size, size_t index_size);
-Mesh *create_mesh(void);
-void load_mesh_file(Mesh *mesh, const char *file);
-void destroy_mesh(Mesh *mesh);
+Mesh *mesh_alloc(size_t vert_size, size_t index_size);
+Mesh *mesh_create(void);
+void mesh_load_from_file(Mesh *mesh, const char *file);
+void mesh_destroy(Mesh **mesh);
 
 #endif
 
