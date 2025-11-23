@@ -30,6 +30,7 @@ const char * file_to_char(FILE * file) {
             perror("Error in allocation");
             return NULL;
         }
+        read_inf = tmp;
     }
     fclose(file);
     char *tmp = realloc(read_inf, sizeof(char) * counter + 1);
@@ -38,6 +39,7 @@ const char * file_to_char(FILE * file) {
         perror("Error in allocation");
         return NULL;
     }
+    read_inf = tmp;
     read_inf[counter] = '\0';
     return read_inf;
 }

@@ -52,6 +52,6 @@ void camera_update_fov(Camera *camera, float new_fov);
 void camera_update_direction(Camera *camera);
 void camera_update_proj(Camera *camera);
 void camera_update_view(Camera *camera);
-void camera_delete(Camera **camera);
+void camera_destroy(Camera **camera);
 
 #endif

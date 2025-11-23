@@ -1,5 +1,7 @@
 #include <stdint.h>
 #include <stdlib.h>
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 #include <texture.h>
 #include <vmm/vec2.h>
 
@@ -33,7 +35,7 @@ Atlas *atlas_create_mem(uint8_t *data, uint32_t x, uint32_t y, uint16_t spr_widt
     return a;
 }
 
-Atlas *atlas_create_text(Texture *texture, uint32_t spr_width, uint32_t spr_height) {
+Atlas *atlas_create_tex(Texture *texture, uint16_t spr_width, uint16_t spr_height) {
     Atlas *a = malloc(sizeof(Atlas));
     a->texture = texture;
     a->spr_width = spr_width;

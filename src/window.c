@@ -21,10 +21,10 @@ void _key_callback(GLFWwindow *window, int key, int scancode, int action, int mo
     
     switch(action) {
     case GLFW_PRESS:
-        window->keyboard_keys[key].down = true;
+        win->keyboard_keys[key].down = true;
         break;
     case GLFW_RELEASE:
-        window->keyboard_keys[key].down = false;
+        win->keyboard_keys[key].down = false;
         break;
     default:
         break;
@@ -55,16 +55,32 @@ void _mouse_callback(GLFWwindow *window, int button, int action, int mods) {
     }
 }
 
+void _scroll_callback(GLFWwindow *window, double xoffset, double yoffset) {
+    Window *win = glfwGetWindowUserPointer(window);
+
+    win->mouse.scroll_delta = yoffset;
+}
+
 Window *window_create(WinSettings settings) {
     Window *window = malloc(sizeof(Window));
     window->window = initGL(settings);
     glfwSetWindowUserPointer(window->window, window);
 
-    glfwSetFramebufferSizeCallback(window, _framebuffer_size_callback);
+    glfwSetFramebufferSizeCallback(window->window, _framebuffer_size_callback);
     glfwSetKeyCallback(window->window, _key_callback);
     glfwSetCursorPosCallback(window->window, _cursor_callback);
     glfwSetMouseButtonCallback(window->window, _mouse_callback);
+    glfwSetScrollCallback(window->window, _scroll_callback);
+
     return window;
+}
+
+void mouse_set_grabbed(Window *window, bool grabbed) {
+    glfwSetInputMode(window->window, GLFW_CURSOR,  grabbed ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL);
+}
+
+bool mouse_get_grabbed(Window *window) {
+    return glfwGetInputMode(window->window, GLFW_CURSOR) == GLFW_CURSOR_DISABLED;
 }
 
 void window_destroy(Window **window) {

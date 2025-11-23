@@ -12,9 +12,9 @@ typedef struct _vbo {
 } VBO;
 
 VBO vbo_create(GLint type, bool dynamic);
-void vbo_delete(VBO vbo);
 void vbo_bind(VBO vbo);
 void vbo_buffer(VBO vbo, void *data, size_t offset, size_t count);
+void vbo_destroy(VBO vbo);
 
 #endif
 

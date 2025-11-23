@@ -7,10 +7,6 @@ VAO vao_create() {
     return vao;
 }
 
-void vao_delete(VAO vao) {
-    glDeleteVertexArrays(1, &vao.handle);
-}
-
 void vao_bind(VAO vao) {
     glBindVertexArray(vao.handle);
 }
@@ -35,4 +31,8 @@ void vao_attr(VAO vao, VBO vbo, GLuint index, GLint size, GLenum type, GLsizei s
             break;
     }
     glEnableVertexAttribArray(index);
+}
+
+void vao_destroy(VAO vao) {
+    glDeleteVertexArrays(1, &vao.handle);
 }

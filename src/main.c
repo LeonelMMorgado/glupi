@@ -5,55 +5,14 @@
 #include <time.h>
 #include <math.h>
 #include <gl_util.h>
-#include <input.h>
 #include <shader.h>
 #include <state.h>
 
 #define SCR_WIDTH 800
 #define SCR_HEIGHT 600
 
-int main(void) {
-    
-    // GLFWwindow *window = initGL("Hello World", false);
-    // if(!window) return -1;
-
-    // build and compile our shader program
-    // ------------------------------------
-    Shader program = create_shader("shaders/vertex.glsl", "shaders/fragment.glsl");
-    if(!program) {
-        printf("Stopping execution after shader program error\n");
-        return -1;
-    }
-    glUseProgram(program);
-
-    // render loop
-    // -----------
-    // while (!glfwWindowShouldClose(window)) {
-        // input
-        //=
-        processInput(window/*, program*/);
-        
-        // render
-        //=
-        glClearColor(0.25f, 0.25f, 0.25f, 0.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-        // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
-        // -------------------------------------------------------------------------------
-        glfwSwapBuffers(window);
-        glfwPollEvents();
-    // }
-
-    // de-allocate all resources once they've outlived their purpose:
-    // ------------------------------------------------------------------------
-    glDeleteProgram(program);
-
-    // glfw: terminate, clearing all previously allocated GLFW resources.
-    // ------------------------------------------------------------------
-    // glfwTerminate();
-    // return 0;
-}
-
 void init(State *state) {
+    mouse_set_grabbed(state->window, true);
 
 }
 
@@ -75,14 +34,42 @@ void destroy(State *state) {
 }
 
 int main(void) {
-    WinSettings settings = {
+    Window *win = NULL;
+    Camera *camera = NULL;
+    Shader *shader = NULL;
+    Renderer *renderer = NULL;
+    State *state = NULL;
+
+    WinSettings settings = (WinSettings){
+        .name = "Hello World!",
         .inv_bg = false,
         .inv_border = false,
-        .name = "Hello World!",
-        .size = {SCR_WIDTH, SCR_HEIGHT}
+        .size = vec2_float(SCR_WIDTH, SCR_HEIGHT)
     };
-    Window *win = window_create(settings);
-    if(!win) return -1;
-    State state = state_init(&win, &init, &tick, &update, &render, &destroy);
-    state_loop(&state);
+    win = window_create(settings);
+    if(!win) goto cleanup;
+
+    Camera_Args cam_arg;
+    cam_arg.p_fov = 90;
+    camera = camera_create(win, PERSPECTIVE_CAMERA, cam_arg);
+    shader = shader_create("shaders/vertex.glsl", "shaders/fragment.glsl");
+    if(!camera || !shader) goto cleanup;
+
+    renderer = renderer_create(camera, shader, COLOR_BLACKA);
+    state = state_create(win, &init, &tick, &update, &render, &destroy);
+    if(!renderer || !state) goto cleanup;
+
+    state_loop(state);
+    state_destroy(&state);
+
+    return 0;
+
+cleanup:
+    if(win) window_destroy(&win);
+    if(camera) camera_destroy(&camera);
+    if(shader) shader_destroy(&shader);
+    if(renderer) renderer_destroy(&renderer);
+    if(state) state_destroy(&state);
+    return 1;
 }
+

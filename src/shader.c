@@ -10,7 +10,7 @@ GLuint make_shader(const char *path, GLenum type) {
     int success;
     char info_log[512];
     GLuint shader = glCreateShader(type);
-    const char * shader_txt = read_file(path);
+    const char * shader_txt = file_read(path);
     if(!shader_txt) {
         return 0;
     }
@@ -27,7 +27,7 @@ GLuint make_shader(const char *path, GLenum type) {
     return shader;
 }
 
-Shader *shader_create(char * vert_path, const char * frag_path) {
+Shader *shader_create(const char * vert_path, const char * frag_path) {
     if(!vert_path || !frag_path) return 0; //TODO: add way for frag only rendering? 
 
     Shader *ret = calloc(1, sizeof(Shader));
@@ -111,8 +111,12 @@ void shader_set_uniform_view_proj(Shader *program, ViewProj view_proj) {
     shader_set_uniform_mat4(program, "projection", view_proj.proj);
 }
 
-void delete_shader(Shader *program) {
-    glDeleteProgram(program->program);
-    glDeleteShader(program->fragment);
-    glDeleteShader(program->vertex);
+void shader_destroy(Shader **program) {
+    if(!program) return;
+    if(!*program) return;
+    glDeleteShader((*program)->fragment);
+    glDeleteShader((*program)->vertex);
+    glDeleteProgram((*program)->program);
+    free(*program);
+    *program = NULL;
 }

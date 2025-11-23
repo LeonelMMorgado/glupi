@@ -8,8 +8,8 @@ Camera *camera_create(Window *win, CameraType type, Camera_Args args) {
     c->type = type;
     c->position = (Vector3){0};
     if(type == ORTHOGRAPHIC_CAMERA) {
-        c->camera_o.min = (Vector2){args.min_max.x, args.min_max.y};
-        c->camera_o.max = (Vector2){args.min_max.z, args.min_max.w};
+        c->camera_o.min = vec2_float(args.min_max.x, args.min_max.y);
+        c->camera_o.max = vec2_float(args.min_max.z, args.min_max.w);
         c->view_proj.proj = mat4_orthogonal(c->camera_o.min.x, c->camera_o.max.x, c->camera_o.min.y, c->camera_o.max.y, -1, 1);
 
         Vector3 eye = vec3_forward();
@@ -92,7 +92,7 @@ void camera_update_view(Camera *camera) {
 }
 
 
-void camera_delete(Camera **camera) {
+void camera_destroy(Camera **camera) {
     if(!camera) return;
     if(!*camera) return;
     free(*camera);

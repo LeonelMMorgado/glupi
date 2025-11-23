@@ -2,6 +2,7 @@
 #define _TEXTURE_H
 
 #include <GLFW/glfw3.h>
+#include <glad/glad.h>
 
 typedef struct _texture {
     GLuint handle;

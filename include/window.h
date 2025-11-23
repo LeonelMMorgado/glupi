@@ -25,7 +25,9 @@ typedef struct _window {
 } Window;
 
 Window *window_create(WinSettings settings);
-void window_delete(Window **window);
+void mouse_set_grabbed(Window *window, bool grabbed);
+bool mouse_get_grabbed(Window *window);
+void window_destroy(Window **window);
 
 #endif
 

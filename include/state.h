@@ -19,9 +19,9 @@ struct _state {
     float now, last_time, delta_time;
 };
 
-State *state_create(Window *window, func_state init, func_state tick, func_state update, func_state render, func_state destroy);
+State *state_create(Window *window, Renderer *renderer, func_state init, func_state tick, func_state update, func_state render, func_state destroy);
 void state_loop(State *state);
-void state_delete(State **state);
+void state_destroy(State **state);
 
 #endif
 
