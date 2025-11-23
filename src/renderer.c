@@ -29,6 +29,11 @@ void renderer_set_shader(Renderer *renderer, Shader *shader) {
     renderer->shader = shader;
 }
 
+void renderer_clear(Renderer *renderer) {
+    glClearColor(renderer->clear_color.x, renderer->clear_color.y, renderer->clear_color.z, renderer->clear_color.w);
+    glClear(GL_COLOR_BUFFER_BIT);
+}
+
 void renderer_view_proj(Renderer *renderer) {
     shader_set_uniform_view_proj(renderer->shader, renderer->camera->view_proj);
 }

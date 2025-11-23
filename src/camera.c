@@ -91,6 +91,10 @@ void camera_update_view(Camera *camera) {
     }
 }
 
+void camera_update_view_proj(Camera *camera) {
+    camera_update_view(camera);
+    camera_update_proj(camera);
+}
 
 void camera_destroy(Camera **camera) {
     if(!camera) return;
