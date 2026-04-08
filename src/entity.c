@@ -1,6 +1,6 @@
 #include <entity.h>
 
-Entity *init_entity(Vector3 pos, Vector3 rot, Vector3 scale, Mesh *mesh, Texture *tex) {
+Entity *entity_create(Vec3 pos, Vec3 rot, Vec3 scale, Mesh *mesh, Texture *tex) {
     Entity *ent = calloc(1, sizeof(Entity));
     ent->model = mat4_make_model(pos, rot, scale);
     ent->position = pos;
@@ -11,7 +11,7 @@ Entity *init_entity(Vector3 pos, Vector3 rot, Vector3 scale, Mesh *mesh, Texture
     return ent;
 }
 
-void destroy_entity(Entity **ent) {
+void entity_destroy(Entity **ent) {
     if(!ent) return;
     if(!*ent) return;
     if((*ent)->mesh) mesh_destroy(&((*ent)->mesh));

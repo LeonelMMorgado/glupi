@@ -22,7 +22,7 @@ Mat3 mat3_add(Mat3 a, Mat3 b);
 Mat3 mat3_sub(Mat3 a, Mat3 b);
 
 Mat3 mat3_mul(Mat3 a, Mat3 b);
-Vector3 mat3_vec3(Mat3 a, Vector3 b);
+Vec3 mat3_vec3(Mat3 a, Vec3 b);
 
 float mat3_det(Mat3 a);
 Mat3 mat3_transp(Mat3 a);

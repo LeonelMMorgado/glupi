@@ -55,6 +55,11 @@ void init(State *state) {
     state_assign_key_func(state, &space_key, GLFW_KEY_SPACE);
     state_assign_key_func(state, &shift_key, GLFW_KEY_LEFT_SHIFT);
 
+	//Load assets
+	Mesh *mpot = mesh_create_from_file("assets/pot.obj");
+	Entity *pot = entity_create(vec3_one(), vec3_zero(), vec3_one(), mpot, NULL);
+	world_add_entity(state->world, pot);
+
     shader_use(state->renderer->shader);
 }
 
@@ -65,12 +70,13 @@ void tick(State *state) {
 
 void update(State *state) {
     state_update_time(state);
-    printf("FPS: %.2f\n", 1.0 / state->delta_time);
+    //printf("FPS: %.2f\n", 1.0 / state->delta_time);
 }
 
 void render(State *state) {
     renderer_clear(state->renderer);
     renderer_view_proj(state->renderer);
+	for(size_t i = 0; i < state->world->size_entities; i++) renderer_entity(state->renderer, state->world->entities[i]);
     glfwSwapBuffers(state->window->window);
 }
 
@@ -79,6 +85,7 @@ void destroy(State *state) {
 }
 
 int main(void) {
+	World *world = NULL;
     Window *win = NULL;
     Camera *camera = NULL;
     Shader *shader = NULL;
@@ -100,8 +107,9 @@ int main(void) {
     shader = shader_create("shaders/vertex.glsl", "shaders/fragment.glsl");
     if(!camera || !shader) goto cleanup;
 
-    renderer = renderer_create(camera, shader, COLOR_WHITEA);
-    state = state_create(win, renderer, &init, &tick, &update, &render, &destroy);
+	world = world_create(NULL, 0);
+    renderer = renderer_create(camera, shader, COLOR_GRAYA);
+    state = state_create(world, win, renderer, &init, &tick, &update, &render, &destroy);
     if(!renderer || !state) goto cleanup;
 
     state_loop(state);

@@ -8,7 +8,7 @@
 
 typedef struct _mouse {
     Button buttons[GLFW_MOUSE_BUTTON_LAST];
-    Vector2 position, delta;
+    Vec2 position, delta;
     float scroll_delta;
 } Mouse;
 

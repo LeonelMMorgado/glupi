@@ -13,42 +13,42 @@ typedef union _ivec2 {
         int32_t u;
         int32_t v;
     };
-} IVector2;
+} IVec2;
 
 #include "vec2.h"
 
-IVector2 ivec2_int(int32_t x, int32_t y);
-IVector2 ivec2_ivec2(IVector2 vec);
-IVector2 ivec2_vec2(Vector2 vec);
-IVector2 ivec2_zero(void);
-IVector2 ivec2_one(void);
-IVector2 ivec2_left(void);
-IVector2 ivec2_right(void);
-IVector2 ivec2_down(void);
-IVector2 ivec2_up(void);
+IVec2 ivec2_int(int32_t x, int32_t y);
+IVec2 ivec2_ivec2(IVec2 vec);
+IVec2 ivec2_vec2(Vec2 vec);
+IVec2 ivec2_zero(void);
+IVec2 ivec2_one(void);
+IVec2 ivec2_left(void);
+IVec2 ivec2_right(void);
+IVec2 ivec2_down(void);
+IVec2 ivec2_up(void);
 
-bool ivec2_equal_vec(IVector2 a, IVector2 b);
-IVector2 ivec2_min(IVector2 a, IVector2 b);
-IVector2 ivec2_max(IVector2 a, IVector2 b);
-IVector2 ivec2_abs(IVector2 a);
-IVector2 ivec2_sign(IVector2 a);
+bool ivec2_equal_vec(IVec2 a, IVec2 b);
+IVec2 ivec2_min(IVec2 a, IVec2 b);
+IVec2 ivec2_max(IVec2 a, IVec2 b);
+IVec2 ivec2_abs(IVec2 a);
+IVec2 ivec2_sign(IVec2 a);
 
-IVector2 ivec2_scalar_add(IVector2 in, int scalar);
-IVector2 ivec2_scalar_sub(IVector2 in, int scalar);
-IVector2 ivec2_scalar_mul(IVector2 in, int scalar);
-IVector2 ivec2_scalar_div(IVector2 in, int scalar);
+IVec2 ivec2_scalar_add(IVec2 in, int scalar);
+IVec2 ivec2_scalar_sub(IVec2 in, int scalar);
+IVec2 ivec2_scalar_mul(IVec2 in, int scalar);
+IVec2 ivec2_scalar_div(IVec2 in, int scalar);
 
-IVector2 ivec2_negate(IVector2 in);
-IVector2 ivec2_add(IVector2 a, IVector2 b);
-IVector2 ivec2_sub(IVector2 a, IVector2 b);
-IVector2 ivec2_mul(IVector2 a, IVector2 b);
-IVector2 ivec2_div(IVector2 a, IVector2 b);
+IVec2 ivec2_negate(IVec2 in);
+IVec2 ivec2_add(IVec2 a, IVec2 b);
+IVec2 ivec2_sub(IVec2 a, IVec2 b);
+IVec2 ivec2_mul(IVec2 a, IVec2 b);
+IVec2 ivec2_div(IVec2 a, IVec2 b);
 
-float ivec2_dot(IVector2 a, IVector2 b);
-float ivec2_angle(IVector2 a, IVector2 b);
-IVector2 ivec2_cross(IVector2 a, IVector2 b);
-float ivec2_len(IVector2 in);
+float ivec2_dot(IVec2 a, IVec2 b);
+float ivec2_angle(IVec2 a, IVec2 b);
+IVec2 ivec2_cross(IVec2 a, IVec2 b);
+float ivec2_len(IVec2 in);
 
-IVector2 ivec2_normalize(IVector2 in);
+IVec2 ivec2_normalize(IVec2 in);
 
 #endif

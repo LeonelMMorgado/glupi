@@ -22,9 +22,9 @@ void shader_set_uniform_uint(Shader *program, const char * name, unsigned int va
 void shader_get_uniform_uint(Shader *program, const char * name, unsigned int * param);
 void shader_set_uniform_float(Shader *program, const char * name, float value);
 void shader_get_uniform_float(Shader *program, const char * name, float * param);
-void shader_set_uniform_vec2(Shader *program, const char * name, Vector2 vec);
-void shader_set_uniform_vec3(Shader *program, const char * name, Vector3 vec);
-void shader_set_uniform_vec4(Shader *program, const char * name, Vector4 vec);
+void shader_set_uniform_vec2(Shader *program, const char * name, Vec2 vec);
+void shader_set_uniform_vec3(Shader *program, const char * name, Vec3 vec);
+void shader_set_uniform_vec4(Shader *program, const char * name, Vec4 vec);
 void shader_set_uniform_mat3(Shader *program, const char * name, Mat3 mat);
 void shader_set_uniform_mat4(Shader *program, const char * name, Mat4 mat);
 void shader_set_uniform_view_proj(Shader *program, ViewProj view_proj);

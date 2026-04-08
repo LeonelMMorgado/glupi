@@ -9,22 +9,22 @@
 #include <vao.h>
 
 typedef struct _vert {
-    Vector3 vert_pos;
-    Vector4 vert_color;
-    Vector2 uv;
-    Vector3 normal;
+    Vec3 vert_pos;
+    Vec4 vert_color;
+    Vec2 uv;
+    Vec3 normal;
 } Vertex;
 
 typedef struct _mesh {
-    Vertex *vertexes; size_t vert_size;
-    Vector3 *indexes; size_t index_size;
+    Vertex *vertexes; size_t size_vertexes;
+    Vec3 *indexes; size_t size_indexes;
 
     VBO vbo, ibo;
     VAO vao;
 } Mesh;
 
-Mesh *mesh_create(Vertex *vertexes, size_t vert_size, Vector3 *indexes, size_t index_size);
-void mesh_load_from_file(Mesh *mesh, const char *file);
+Mesh *mesh_create(Vertex *vertexes, size_t size_vertexes, Vec3 *indexes, size_t size_indexes);
+Mesh *mesh_create_from_file(const char *file_path);
 void mesh_destroy(Mesh **mesh);
 
 #endif

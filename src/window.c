@@ -33,7 +33,7 @@ void _key_callback(GLFWwindow *window, int key, int scancode, int action, int mo
 
 void _cursor_callback(GLFWwindow *window, double xpos, double ypos) {
     Window *win = glfwGetWindowUserPointer(window);
-    Vector2 mouse_pos = vec2_float(xpos, ypos);
+    Vec2 mouse_pos = vec2_float(xpos, ypos);
     win->mouse.delta = vec2_sub(mouse_pos, win->mouse.position);
     win->mouse.position = mouse_pos;
 }

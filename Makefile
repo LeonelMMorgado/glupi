@@ -10,7 +10,7 @@ OBJ_FILES = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC_FILES))
 
 FINAL = main
 
-CFLAGS = -g -Wall -I$(INC_DIR)
+CFLAGS = -g3 -O3 -Wall -I$(INC_DIR)
 
 ifeq ($(OS), Windows_NT)
 LDFLAGS = -L$(LIB_DIR) -lws2_32 -lpthread -lglfw3 -lgdi32 -lglad -lvmm

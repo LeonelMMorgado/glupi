@@ -6,15 +6,15 @@
 Camera *camera_create(Window *win, CameraType type, Camera_Args args) {
     Camera *c = calloc(1, sizeof(Camera));
     c->type = type;
-    c->position = (Vector3){0};
+    c->position = (Vec3){0};
     if(type == ORTHOGRAPHIC_CAMERA) {
         c->camera_o.min = vec2_float(args.min_max.x, args.min_max.y);
         c->camera_o.max = vec2_float(args.min_max.z, args.min_max.w);
         c->view_proj.proj = mat4_orthogonal(c->camera_o.min.x, c->camera_o.max.x, c->camera_o.min.y, c->camera_o.max.y, -1, 1);
 
-        Vector3 eye = vec3_forward();
-        Vector3 center = vec3_zero();
-        Vector3 up = vec3_up();
+        Vec3 eye = vec3_forward();
+        Vec3 center = vec3_zero();
+        Vec3 up = vec3_up();
         c->view_proj.view = mat4_look_at(eye, center, up);
     }
     else if(type == PERSPECTIVE_CAMERA) {
@@ -28,24 +28,24 @@ Camera *camera_create(Window *win, CameraType type, Camera_Args args) {
         c->camera_p.right = vec3_cross(c->camera_p.direction, c->camera_p.up);
         c->view_proj.proj = mat4_perspective(c->camera_p.fov, c->camera_p.aspect, c->camera_p.zNear, c->camera_p.zFar);
         
-        Vector3 eye = vec3_zero();
-        Vector3 center = vec3_add(eye, c->camera_p.direction);
-        Vector3 up = c->camera_p.up;
+        Vec3 eye = vec3_zero();
+        Vec3 center = vec3_add(eye, c->camera_p.direction);
+        Vec3 up = c->camera_p.up;
         c->view_proj.view = mat4_look_at(eye, center, up);
     }
     return c;
 }
 
-void camera_move(Camera *camera, Vector3 movement) {
+void camera_move(Camera *camera, Vec3 movement) {
     camera_update_pos(camera, vec3_add(camera->position, vec3_mul(camera->camera_p.direction, movement)));
 }
 
-void camera_update_pos(Camera *camera, Vector3 new_pos) {
+void camera_update_pos(Camera *camera, Vec3 new_pos) {
     camera->position = new_pos;
     // camera_update_view(camera);
 }
 
-void camera_yaw_pitch(Camera *camera, Vector2 offset) {
+void camera_yaw_pitch(Camera *camera, Vec2 offset) {
     camera_update_yaw(camera, offset.x);
     camera_update_pitch(camera, offset.y);
 }
@@ -86,7 +86,7 @@ void camera_update_view(Camera *camera) {
     if(camera->type == ORTHOGRAPHIC_CAMERA)
         ;
     if(camera->type == PERSPECTIVE_CAMERA) {
-        Vector3 center = vec3_add(camera->position, camera->camera_p.direction);
+        Vec3 center = vec3_add(camera->position, camera->camera_p.direction);
         camera->view_proj.view = mat4_look_at(camera->position, center, camera->camera_p.up);
     }
 }

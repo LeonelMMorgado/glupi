@@ -7,13 +7,13 @@
 #include <texture.h>
 
 typedef struct _entity {
-    Vector3 position, rotation, scale;
+    Vec3 position, rotation, scale;
     Mat4 model;
     Mesh *mesh;
     Texture *tex;
 } Entity;
 
-Entity *entity_create(Vector3 pos, Vector3 rot, Vector3 scale, Mesh *mesh, Texture *tex);
+Entity *entity_create(Vec3 pos, Vec3 rot, Vec3 scale, Mesh *mesh, Texture *tex);
 void entity_destroy(Entity **ent);
 
 #endif

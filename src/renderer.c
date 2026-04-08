@@ -7,6 +7,7 @@
 #include <vao.h>
 #include <vbo.h>
 #include <mesh.h>
+#include <strcts.h>
 
 #ifndef DEBUG_COLOR
 #define DEBUG_COLOR COLOR_PURPLEA
@@ -44,7 +45,7 @@ void renderer_color(Renderer *renderer, Mesh *mesh, ColorRGBA color, Mat4 model)
     shader_set_uniform_mat4(renderer->shader, "model", model);
     vao_bind(mesh->vao);
 
-    glDrawElements(GL_TRIANGLES, mesh->index_size, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, mesh->size_indexes, GL_UNSIGNED_INT, 0);
 }
 
 void renderer_texture(Renderer *renderer, Mesh *mesh, Texture *texture, ColorRGBA color, Mat4 model) {
@@ -54,10 +55,10 @@ void renderer_texture(Renderer *renderer, Mesh *mesh, Texture *texture, ColorRGB
     vao_bind(mesh->vao);
     texture_bind(texture);
 
-    glDrawElements(GL_TRIANGLES, mesh->index_size, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, mesh->size_indexes, GL_UNSIGNED_INT, 0);
 }
 
-void renderer_render_entity(Renderer *renderer, Entity *entity) {
+void renderer_entity(Renderer *renderer, Entity *entity) {
     if(!entity || !renderer) return;
     if(!entity->mesh || !renderer->shader) return;
     //FIXME: change how colors are treated

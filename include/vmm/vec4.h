@@ -16,33 +16,33 @@ typedef union _vec4 {
         float b;
         float a;
     };
-} Vector4;
+} Vec4;
 
-Vector4 vec4_float(float x, float y, float z, float w);
-Vector4 vec4_vec4(Vector4 vec);
-Vector4 vec4_zero(void);
-Vector4 vec4_one(void);
+Vec4 vec4_float(float x, float y, float z, float w);
+Vec4 vec4_vec4(Vec4 vec);
+Vec4 vec4_zero(void);
+Vec4 vec4_one(void);
 
-bool vec4_equal_vec(Vector4 a, Vector4 b);
-Vector4 vec4_max(Vector4 a, Vector4 b);
-Vector4 vec4_abs(Vector4 a);
-Vector4 vec4_sign(Vector4 a);
+bool vec4_equal_vec(Vec4 a, Vec4 b);
+Vec4 vec4_max(Vec4 a, Vec4 b);
+Vec4 vec4_abs(Vec4 a);
+Vec4 vec4_sign(Vec4 a);
 
-Vector4 vec4_scalar_add(Vector4 in, float scalar);
-Vector4 vec4_scalar_sub(Vector4 in, float scalar);
-Vector4 vec4_scalar_mul(Vector4 in, float scalar);
-Vector4 vec4_scalar_div(Vector4 in, float scalar);
+Vec4 vec4_scalar_add(Vec4 in, float scalar);
+Vec4 vec4_scalar_sub(Vec4 in, float scalar);
+Vec4 vec4_scalar_mul(Vec4 in, float scalar);
+Vec4 vec4_scalar_div(Vec4 in, float scalar);
 
-Vector4 vec4_negate(Vector4 in);
-Vector4 vec4_add(Vector4 a, Vector4 b);
-Vector4 vec4_sub(Vector4 a, Vector4 b);
-Vector4 vec4_mul(Vector4 a, Vector4 b);
-Vector4 vec4_div(Vector4 a, Vector4 b);
+Vec4 vec4_negate(Vec4 in);
+Vec4 vec4_add(Vec4 a, Vec4 b);
+Vec4 vec4_sub(Vec4 a, Vec4 b);
+Vec4 vec4_mul(Vec4 a, Vec4 b);
+Vec4 vec4_div(Vec4 a, Vec4 b);
 
-float vec4_dot(Vector4 a, Vector4 b);
-float vec4_angle(Vector4 a, Vector4 b);
-float vec4_len(Vector4 in);
+float vec4_dot(Vec4 a, Vec4 b);
+float vec4_angle(Vec4 a, Vec4 b);
+float vec4_len(Vec4 in);
 
-Vector4 vec4_normalize(Vector4 in);
+Vec4 vec4_normalize(Vec4 in);
 
 #endif

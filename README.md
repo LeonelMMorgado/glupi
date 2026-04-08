@@ -17,8 +17,5 @@ Define functions to run on initialize, update, draw and on exit. The program exp
 
 - texture reader
 
-- model reader
-
 - render quad
 
-- change names

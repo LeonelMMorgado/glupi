@@ -14,7 +14,7 @@
 typedef struct _renderer {
     Shader *shader;
     Camera *camera;
-    Vector4 clear_color;
+    Vec4 clear_color;
 } Renderer;
 
 Renderer *renderer_create(Camera *camera, Shader *shader, ColorRGBA clear_color);
@@ -24,7 +24,7 @@ void renderer_clear(Renderer *renderer);
 void renderer_view_proj(Renderer *renderer);
 void renderer_color(Renderer *renderer, Mesh *mesh, ColorRGBA color, Mat4 model);
 void renderer_texture(Renderer *renderer, Mesh *mesh, Texture *texture, ColorRGBA color, Mat4 model);
-void renderer_render_entity(Renderer *renderer, Entity *entity);
+void renderer_entity(Renderer *renderer, Entity *entity);
 void renderer_destroy(Renderer **renderer);
 
 #endif

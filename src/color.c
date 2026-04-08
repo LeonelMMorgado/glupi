@@ -56,8 +56,8 @@ uint8_t get_alpha_rgba(ColorRGBA color) {
     return alpha;
 }
 
-Vector3 get_rgb_vec3(ColorRGB color) {
-    Vector3 vec = {
+Vec3 get_rgb_vec3(ColorRGB color) {
+    Vec3 vec = {
         .x = (float)get_red_rgb(color) / (float)0xff,
         .y = (float)get_green_rgb(color) / (float)0xff,
         .z = (float)get_blue_rgb(color) / (float)0xff
@@ -65,8 +65,8 @@ Vector3 get_rgb_vec3(ColorRGB color) {
     return vec;
 }
 
-Vector4 get_rgba_vec4(ColorRGBA color) {
-    Vector4 vec = {
+Vec4 get_rgba_vec4(ColorRGBA color) {
+    Vec4 vec = {
         .x = (float)get_red_rgba(color) / (float)0xff,
         .y = (float)get_green_rgba(color) / (float)0xff,
         .z = (float)get_blue_rgba(color) / (float)0xff,

@@ -1,14 +1,15 @@
 #include <state.h>
 
-State *state_create(Window *window, Renderer *renderer, func_state init, func_state tick, func_state update, func_state render, func_state destroy) {
+State *state_create(World *world, Window *window, Renderer *renderer, func_state init, func_state tick, func_state update, func_state render, func_state destroy) {
     State *state = calloc(1, sizeof(State));
+	state->world = world;
+    state->window = window;
+    state->renderer = renderer;
     state->init = init;
     state->destroy = destroy;
     state->tick = tick;
     state->update = update;
     state->render = render;
-    state->window = window;
-    state->renderer = renderer;
     return state;
 }
 
@@ -69,6 +70,7 @@ void state_assign_key_func(State *state, func_state key_function, GLenum key) {
 void state_destroy(State **state) {
     if(!state) return;
     if(!*state) return;
+	if((*state)->world) world_destroy(&((*state)->world));
     if((*state)->window) window_destroy(&((*state)->window));
     if((*state)->renderer) renderer_destroy(&((*state)->renderer));
     free(*state);

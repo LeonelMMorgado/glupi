@@ -42,8 +42,8 @@ uint8_t get_blue_rgb(ColorRGB color);
 uint8_t get_blue_rgba(ColorRGBA color);
 uint8_t get_alpha_rgba(ColorRGBA color);
 
-Vector3 get_rgb_vec3(ColorRGB color);
-Vector4 get_rgba_vec4(ColorRGBA color);
+Vec3 get_rgb_vec3(ColorRGB color);
+Vec4 get_rgba_vec4(ColorRGBA color);
 
 #endif
 

@@ -12,7 +12,7 @@ typedef struct _win_set {
     char *name;
     bool inv_border;
     bool inv_bg;
-    Vector2 size;
+    Vec2 size;
 } WinSettings;
 
 typedef struct _window {

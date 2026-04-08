@@ -17,20 +17,20 @@ typedef struct _view_proj {
 } ViewProj;
 
 typedef struct _p_cam {
-    Vector3 direction, up, world_up, right, sensitivity;
+    Vec3 direction, up, world_up, right, sensitivity;
 
     float pitch, yaw, fov, aspect, zNear, zFar;
 } PerspectiveCamera;
 
 typedef struct _o_cam {
-    Vector2 min, max;
+    Vec2 min, max;
 } OrthographicCamera;
 
 typedef struct _camera {
     //TODO: add roll for camera_shake
     ViewProj view_proj;
     CameraType type;
-    Vector3 position;
+    Vec3 position;
     union {
         PerspectiveCamera camera_p;
         OrthographicCamera camera_o;
@@ -39,13 +39,13 @@ typedef struct _camera {
 
 typedef union _camera_args {
     float p_fov;
-    Vector4 min_max;
+    Vec4 min_max;
 } Camera_Args;
 
 Camera *camera_create(Window *win, CameraType type, Camera_Args args);
-void camera_move(Camera *camera, Vector3 movement);
-void camera_yaw_pitch(Camera *camera, Vector2 offset);
-void camera_update_pos(Camera *camera, Vector3 new_pos);
+void camera_move(Camera *camera, Vec3 movement);
+void camera_yaw_pitch(Camera *camera, Vec2 offset);
+void camera_update_pos(Camera *camera, Vec3 new_pos);
 void camera_update_yaw(Camera *camera, float xoffset);
 void camera_update_pitch(Camera *camera, float yoffset);
 void camera_update_fov(Camera *camera, float new_fov);

@@ -86,15 +86,15 @@ void shader_get_uniform_float(Shader *program, const char * name, float * param)
     glGetUniformfv(program->program, _get_loc(program, name), param);
 }
 
-void shader_set_uniform_vec2(Shader *program, const char * name, Vector2 vec) {
+void shader_set_uniform_vec2(Shader *program, const char * name, Vec2 vec) {
     glUniform2f(_get_loc(program, name), vec.x, vec.y);
 }
 
-void shader_set_uniform_vec3(Shader *program, const char * name, Vector3 vec) {
+void shader_set_uniform_vec3(Shader *program, const char * name, Vec3 vec) {
     glUniform3f(_get_loc(program, name), vec.x, vec.y, vec.z);
 }
 
-void shader_set_uniform_vec4(Shader *program, const char * name, Vector4 vec) {
+void shader_set_uniform_vec4(Shader *program, const char * name, Vec4 vec) {
     glUniform4f(_get_loc(program, name), vec.x, vec.y, vec.z, vec.w);
 }
 
