@@ -17,7 +17,8 @@ typedef struct _view_proj {
 } ViewProj;
 
 typedef struct _p_cam {
-    Vec3 direction, up, world_up, right, sensitivity;
+    Vec3 direction, up, world_up, right;
+	Vec2 sensitivity;
 
     float pitch, yaw, fov, aspect, zNear, zFar;
 } PerspectiveCamera;
@@ -52,7 +53,6 @@ void camera_update_fov(Camera *camera, float new_fov);
 void camera_update_direction(Camera *camera);
 void camera_update_proj(Camera *camera);
 void camera_update_view(Camera *camera);
-void camera_update_view_proj(Camera *camera);
 void camera_destroy(Camera **camera);
 
 #endif

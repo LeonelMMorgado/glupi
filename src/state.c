@@ -1,6 +1,8 @@
 #include <state.h>
+#include <stdio.h>
 
 State *state_create(World *world, Window *window, Renderer *renderer, func_state init, func_state tick, func_state update, func_state render, func_state destroy) {
+	printf("Creating State\n");
     State *state = calloc(1, sizeof(State));
 	state->world = world;
     state->window = window;
@@ -16,9 +18,11 @@ State *state_create(World *world, Window *window, Renderer *renderer, func_state
 void state_loop(State *state) {
     state->init(state);
     while(!glfwWindowShouldClose(state->window->window)) {
+    	state_process_input(state);
         state->tick(state);
         state->update(state);
         state->render(state);
+		glfwSwapBuffers(state->window->window);
     }
     state->destroy(state);
 }
@@ -32,19 +36,30 @@ void state_update_time(State *state) {
 void state_process_input(State *state) {
     glfwPollEvents();
 
-    if(!vec2_equal_vec(state->window->mouse.delta, vec2_zero()))
+    if(!vec2_equal_vec(state->window->mouse.delta, vec2_zero())) {
         if(state->mouse_func) state->mouse_func(state);
+		state->window->mouse.last_position = state->window->mouse.position;
+		state->window->mouse.delta = vec2_zero();
+	}
 
-    if(state->window->mouse.scroll_delta != 0.0) //threshold?
+    if(state->window->mouse.scroll_delta != 0.0) {
         if(state->scroll_func) state->scroll_func(state);
+		state->window->mouse.scroll_delta = 0.0;
+	}
     
-    for(int i = 0; i < GLFW_MOUSE_BUTTON_LAST; i++)
-        if(state->window->mouse.buttons[i].pressed)
+    for(int i = 0; i < GLFW_MOUSE_BUTTON_LAST; i++) {
+        if(state->window->mouse.buttons[i].down) {
             if(state->mouse_button_funcs[i]) state->mouse_button_funcs[i](state);
+			state->window->mouse.buttons[i].pressed = false;
+		}
+	}
 
-    for(int i = 0; i < GLFW_KEY_LAST; i++)
-        if(state->window->keyboard_keys[i].pressed)
+    for(int i = 0; i < GLFW_KEY_LAST; i++) {
+        if(state->window->keyboard_keys[i].down) {
             if(state->keyboard_funcs[i]) state->keyboard_funcs[i](state);
+			state->window->keyboard_keys[i].pressed = false;
+		}
+	}
 }
 
 void state_assign_mouse_func(State *state, func_state mouse_function) {

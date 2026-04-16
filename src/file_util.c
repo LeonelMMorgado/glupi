@@ -10,28 +10,25 @@ FILE * file_open(const char * path) {
     return file;
 }
 
-const char * file_to_char(FILE * file) {
+char * file_to_char(FILE * file) {
     if(!file) return NULL;
 	fseek(file, 0, SEEK_END);
-    int read_size = ftell(file) + 1;
-	if(read_size > 1 << 30) return NULL;
-    int counter = 0;
+    size_t read_size = ftell(file) + 1;
+	if(read_size > (size_t)1 << (sizeof(size_t) * 8 - 2) || read_size < 0) return NULL;
     char * read_inf = malloc(sizeof(char) * read_size);
     if(!read_inf) {
 		fprintf(stderr, "Out of memory!\n");
         return NULL;
     }
 	fseek(file, 0, SEEK_SET);
-    for(;;) {
-        int B_read = fread(read_inf + counter, sizeof(char), read_size - counter, file);
-        counter += B_read;
-        if(B_read < read_size - counter) break;
-    }
-    fclose(file);
-    read_inf[counter] = '\0';
+	size_t read_b = fread(read_inf, sizeof(char), read_size, file);
+    read_inf[read_b] = '\0';
     return read_inf;
 }
 
-const char * file_read(const char * path) {
-    return file_to_char(file_open(path));
+char * file_read(const char * path) {
+	FILE *f = file_open(path);
+	char *fc = file_to_char(f);
+	fclose(f);
+    return fc;
 }

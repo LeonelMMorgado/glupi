@@ -6,12 +6,12 @@
 #include <vbo.h>
 
 typedef struct _vao {
-    GLuint handle;
+	GLuint handle;
 } VAO;
 
 VAO vao_create(void);
 void vao_bind(VAO vao);
-void vao_attr(VAO vao, VBO vbo, GLuint index, GLint size, GLenum type, GLsizei stride, size_t offset);
+void vao_attr(VAO vao, GLuint index, GLint size, GLenum type, GLsizei stride, size_t offset);
 void vao_destroy(VAO vao);
 
 #endif

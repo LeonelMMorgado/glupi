@@ -422,9 +422,11 @@ bool at_destroy(AbstractTree **tree);
 
 #define array_destroy(array) \
 	do { \
-		ArrayHeader *h = (((ArrayHeader*)(array)) - 1); \
-		free(h); \
-		(array) = NULL; \
+		if((array)) { \
+			ArrayHeader *h = (((ArrayHeader*)(array)) - 1); \
+			(array) = NULL; \
+			free(h); \
+		} \
 	} while(0)
 
 #define al_insert_const(list, val, type) \
@@ -562,12 +564,13 @@ bool al_realloc(ArrayList *list) {
 }
 
 void al_change_comparator(ArrayList *list, compare_fn compare_function) {
-	if(!list || !compare_function) return;
+	if(!list) return;
 	list->compare_function = compare_function;
+	if(!compare_function) list->compare_function = &memcmp;
 }
 
 void al_change_destroyer(ArrayList *list, destroy_fn destroy_function) {
-	if(!list || !destroy_function) return;
+	if(!list) return;
 	list->destroy_function = destroy_function;
 }
 
@@ -845,12 +848,13 @@ LinkedList *ll_create_full(size_t size_elements, compare_fn compare_function, de
 }
 
 void ll_change_comparator(LinkedList *list, compare_fn compare_function) {
-	if(!list || !compare_function) return;
+	if(!list) return;
 	list->compare_function = compare_function;
+	if(!compare_function) list->compare_function = &memcmp;
 }
 
 void ll_change_destroyer(LinkedList *list, destroy_fn destroy_function) {
-	if(!list || !destroy_function) return;
+	if(!list) return;
 	list->destroy_function = destroy_function;
 }
 
@@ -1202,12 +1206,13 @@ HashSet *hs_create_full(size_t size_elements, compare_fn compare_function, destr
 }
 
 void hs_change_comparator(HashSet *hs, compare_fn compare_function) {
-	if(!hs || !compare_function) return;
+	if(!hs) return;
 	hs->compare_function = compare_function;
+	if(!compare_function) hs->compare_function = &memcmp;
 }
 
 void hs_change_destroyer(HashSet *hs, destroy_fn destroy_function) {
-	if(!hs || !destroy_function) return;
+	if(!hs) return;
 	hs->destroy_function = destroy_function;
 }
 
@@ -1277,6 +1282,7 @@ bool hs_rehash(HashSet *hs) {
 			ll_add_tail(new_entry, p->element);
 			p = p->next;
         }
+		ll_change_destroyer(elements, NULL);
         ll_destroy(&elements);
     }
     al_destroy(&(hs->list));
@@ -1604,12 +1610,13 @@ BinaryTree *bt_create_full(size_t size_elements, compare_fn compare_function, de
 }
 
 void bt_change_comparator(BinaryTree *tree, compare_fn compare_function) {
-	if(!tree || !compare_function) return;
+	if(!tree) return;
 	tree->compare_function = compare_function;
+	if(!compare_function) tree->compare_function = &memcmp;
 }
 
 void bt_change_destroyer(BinaryTree *tree, destroy_fn destroy_function) {
-	if(!tree || !destroy_function) return;
+	if(!tree) return;
 	tree->destroy_function = destroy_function;
 }
 
@@ -1883,12 +1890,13 @@ AbstractTree *at_create_full(void *val, size_t size_elements, compare_fn compare
 }
 
 void at_change_comparator(AbstractTree *tree, compare_fn compare_function) {
-	if(!tree || !compare_function) return;
+	if(!tree) return;
 	tree->compare_function = compare_function;
+	if(!compare_function) tree->compare_function = &memcmp;
 }
 
 void at_change_destroyer(AbstractTree *tree, destroy_fn destroy_function) {
-	if(!tree || !destroy_function) return;
+	if(!tree) return;
 	tree->destroy_function = destroy_function;
 }
 

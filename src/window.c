@@ -1,4 +1,5 @@
 #include <window.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include <gl_util.h>
@@ -10,8 +11,8 @@ void _framebuffer_size_callback(GLFWwindow* window, int width, int height) {
     // height will be significantly larger than specified on retina displays.
     glViewport(0, 0, width, height);
     Window *win = glfwGetWindowUserPointer(window);
-    win->settings.size.x = width;
-    win->settings.size.y = height;
+    win->settings.size.x = (float)width;
+    win->settings.size.y = (float)height;
 }
 
 void _key_callback(GLFWwindow *window, int key, int scancode, int action, int mods) {
@@ -21,6 +22,7 @@ void _key_callback(GLFWwindow *window, int key, int scancode, int action, int mo
     
     switch(action) {
     case GLFW_PRESS:
+        win->keyboard_keys[key].pressed = true;
         win->keyboard_keys[key].down = true;
         break;
     case GLFW_RELEASE:
@@ -33,9 +35,9 @@ void _key_callback(GLFWwindow *window, int key, int scancode, int action, int mo
 
 void _cursor_callback(GLFWwindow *window, double xpos, double ypos) {
     Window *win = glfwGetWindowUserPointer(window);
-    Vec2 mouse_pos = vec2_float(xpos, ypos);
-    win->mouse.delta = vec2_sub(mouse_pos, win->mouse.position);
-    win->mouse.position = mouse_pos;
+	win->mouse.last_position = win->mouse.position;
+    win->mouse.position = vec2_float(xpos, ypos);
+    win->mouse.delta = vec2_sub(win->mouse.position, win->mouse.last_position);
 }
 
 void _mouse_callback(GLFWwindow *window, int button, int action, int mods) {
@@ -45,6 +47,7 @@ void _mouse_callback(GLFWwindow *window, int button, int action, int mods) {
     
     switch(action) {
     case GLFW_PRESS:
+        win->mouse.buttons[button].pressed = true;
         win->mouse.buttons[button].down = true;
         break;
     case GLFW_RELEASE:
@@ -61,9 +64,24 @@ void _scroll_callback(GLFWwindow *window, double xoffset, double yoffset) {
     win->mouse.scroll_delta = yoffset;
 }
 
+void _close_callback(GLFWwindow *window) {
+	glfwSetWindowShouldClose(window, true);
+}
+
 Window *window_create(WinSettings settings) {
+	printf("Creating Window\n");
     Window *window = malloc(sizeof(Window));
+	if(!window) return NULL;
     window->window = initGL(settings);
+	if(!window->window) {
+		free(window);
+		return NULL;
+	}
+
+	int sx, sy;
+	glfwGetWindowSize(window->window, &sx, &sy);
+	window->settings.size = vec2_float((float)sx, (float)sy);
+
     glfwSetWindowUserPointer(window->window, window);
 
     glfwSetFramebufferSizeCallback(window->window, _framebuffer_size_callback);
@@ -71,6 +89,7 @@ Window *window_create(WinSettings settings) {
     glfwSetCursorPosCallback(window->window, _cursor_callback);
     glfwSetMouseButtonCallback(window->window, _mouse_callback);
     glfwSetScrollCallback(window->window, _scroll_callback);
+	glfwSetWindowCloseCallback(window->window, _close_callback);
 
     return window;
 }

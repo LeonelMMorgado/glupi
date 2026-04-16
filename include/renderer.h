@@ -22,8 +22,8 @@ void renderer_set_camera(Renderer *renderer, Camera *camera);
 void renderer_set_shader(Renderer *renderer, Shader *shader);
 void renderer_clear(Renderer *renderer);
 void renderer_view_proj(Renderer *renderer);
-void renderer_color(Renderer *renderer, Mesh *mesh, ColorRGBA color, Mat4 model);
-void renderer_texture(Renderer *renderer, Mesh *mesh, Texture *texture, ColorRGBA color, Mat4 model);
+void renderer_color(Renderer *renderer, Mesh *mesh, ColorRGBA color);
+void renderer_texture(Renderer *renderer, Mesh *mesh, Texture *texture, ColorRGBA color);
 void renderer_entity(Renderer *renderer, Entity *entity);
 void renderer_destroy(Renderer **renderer);
 

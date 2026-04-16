@@ -11,9 +11,10 @@ void vao_bind(VAO vao) {
     glBindVertexArray(vao.handle);
 }
 
-void vao_attr(VAO vao, VBO vbo, GLuint index, GLint size, GLenum type, GLsizei stride, size_t offset) {
+void vao_attr(VAO vao, GLuint index, GLint size, GLenum type, GLsizei stride, size_t offset) {
     vao_bind(vao);
-    vbo_bind(vbo);
+
+    glEnableVertexAttribArray(index);
 
     switch(type) {
         case GL_BYTE:
@@ -30,7 +31,6 @@ void vao_attr(VAO vao, VBO vbo, GLuint index, GLint size, GLenum type, GLsizei s
             glVertexAttribPointer(index, size, type, GL_FALSE, stride, (void *) offset);
             break;
     }
-    glEnableVertexAttribArray(index);
 }
 
 void vao_destroy(VAO vao) {

@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <shader.h>
 #include <file_util.h>
+#include <gl_util.h>
 
 GLuint make_shader(const char *path, GLenum type) {
     if(!path) return 0;
@@ -19,8 +20,24 @@ GLuint make_shader(const char *path, GLenum type) {
     glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
     if(!success) {
         glGetShaderInfoLog(shader, 512, NULL, info_log);
-        perror("ERROR::SHADER::COMPILATION_FAILED\n");
-        fprintf(stderr, "%s\n", info_log);
+		fprintf(stderr, "ERROR::");
+        switch(type) {
+		case GL_VERTEX_SHADER:
+			fprintf(stderr, "VERTEX");
+			break;
+		case GL_FRAGMENT_SHADER:
+			fprintf(stderr, "FRAGMENT");
+			break;
+		case GL_COMPUTE_SHADER:
+			fprintf(stderr, "COMPUTE");
+			break;
+		default:
+			fprintf(stderr, "SHADER");
+			break;
+		}
+		fprintf(stderr, "::COMPILATION_FAILED\n");
+        fprintf(stderr, "%s", info_log);
+		free((char *)shader_txt);
         return 0;
     }
     free((char *)shader_txt);
@@ -28,6 +45,7 @@ GLuint make_shader(const char *path, GLenum type) {
 }
 
 Shader *shader_create(const char * vert_path, const char * frag_path) {
+	printf("Creating Shader\n");
     if(!vert_path || !frag_path) return 0; //TODO: add way for frag only rendering? 
 
     Shader *ret = calloc(1, sizeof(Shader));
@@ -49,6 +67,9 @@ Shader *shader_create(const char * vert_path, const char * frag_path) {
         glGetProgramInfoLog(ret->program, 512, NULL, info_log);
         printf("ERROR::SHADER::PROGRAM::LINKING_FAILED\n");
         printf("%s\n", info_log);
+		glDeleteShader(ret->vertex);
+		glDeleteShader(ret->fragment);
+		free(ret);
         return 0;
     }
     return ret;
@@ -59,51 +80,75 @@ void shader_use(Shader *program) {
 }
 
 int _get_loc(Shader *program, const char *name) {
-    return glGetUniformLocation(program->program, name);
+	GLint loc = glGetUniformLocation(program->program, name);
+	glCheckError();
+    return loc;
 }
 
 void shader_set_uniform_int(Shader *program, const char * name, int value) {
-    glUniform1i(_get_loc(program, name), value);
+	GLint loc = _get_loc(program, name);
+    glUniform1i(loc, value);
+	glCheckError();
 }
 
 void shader_get_uniform_int(Shader *program, const char * name, int * param) {
-    glGetUniformiv(program->program, _get_loc(program, name), param);
+	GLint loc = _get_loc(program, name);
+    glGetUniformiv(program->program, loc, param);
+	glCheckError();
 }
 
 void shader_set_uniform_uint(Shader *program, const char * name, unsigned int value) {
-    glUniform1ui(_get_loc(program, name), value);
+	GLint loc = _get_loc(program, name);
+    glUniform1ui(loc, value);
+	glCheckError();
 }
 
 void shader_get_uniform_uint(Shader *program, const char * name, unsigned int * param) {
-    glGetUniformuiv(program->program, _get_loc(program, name), param);
+	GLint loc = _get_loc(program, name);
+    glGetUniformuiv(program->program, loc, param);
+	glCheckError();
 }
 
 void shader_set_uniform_float(Shader *program, const char * name, float value) {
-    glUniform1f(_get_loc(program, name), value);
+	GLint loc = _get_loc(program, name);
+    glUniform1f(loc, value);
+	glCheckError();
 }
 
 void shader_get_uniform_float(Shader *program, const char * name, float * param) {
-    glGetUniformfv(program->program, _get_loc(program, name), param);
+	GLint loc = _get_loc(program, name);
+    glGetUniformfv(program->program, loc, param);
+	glCheckError();
 }
 
 void shader_set_uniform_vec2(Shader *program, const char * name, Vec2 vec) {
-    glUniform2f(_get_loc(program, name), vec.x, vec.y);
+	GLint loc = _get_loc(program, name);
+    glUniform2f(loc, vec.x, vec.y);
+	glCheckError();
 }
 
 void shader_set_uniform_vec3(Shader *program, const char * name, Vec3 vec) {
-    glUniform3f(_get_loc(program, name), vec.x, vec.y, vec.z);
+	GLint loc = _get_loc(program, name);
+    glUniform3f(loc, vec.x, vec.y, vec.z);
+	glCheckError();
 }
 
 void shader_set_uniform_vec4(Shader *program, const char * name, Vec4 vec) {
-    glUniform4f(_get_loc(program, name), vec.x, vec.y, vec.z, vec.w);
+	GLint loc = _get_loc(program, name);
+    glUniform4f(loc, vec.x, vec.y, vec.z, vec.w);
+	glCheckError();
 }
 
 void shader_set_uniform_mat3(Shader *program, const char * name, Mat3 mat) {
-    glUniformMatrix3fv(_get_loc(program, name), 1, GL_FALSE, mat.mat);
+	GLint loc = _get_loc(program, name);
+    glUniformMatrix3fv(loc, 1, GL_FALSE, mat.mat);
+	glCheckError();
 }
 
 void shader_set_uniform_mat4(Shader *program, const char * name, Mat4 mat) {
-    glUniformMatrix4fv(_get_loc(program, name), 1, GL_FALSE, mat.mat);
+	GLint loc = _get_loc(program, name);
+    glUniformMatrix4fv(loc, 1, GL_FALSE, mat.mat);
+	glCheckError();
 }
 
 void shader_set_uniform_view_proj(Shader *program, ViewProj view_proj) {

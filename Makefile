@@ -10,14 +10,15 @@ OBJ_FILES = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC_FILES))
 
 FINAL = main
 
-CFLAGS = -g3 -O3 -Wall -I$(INC_DIR)
+CFLAGS = -O3 -Wall -I$(INC_DIR) #-g3 -fsanitize=address -fno-omit-frame-pointer
+LDFLAGS = -L$(LIB_DIR) -lpthread -lglad -lvmm #-g3 -fsanitize=address
 
 ifeq ($(OS), Windows_NT)
-LDFLAGS = -L$(LIB_DIR) -lws2_32 -lpthread -lglfw3 -lgdi32 -lglad -lvmm
+LDFLAGS += -lws2_32 -lglfw3 -lgdi32
 REMOVE = rmdir /s /q
 TARGET_EXT = .exe
 else
-LDFLAGS = -L$(LIB_DIR) -lpthread -lm -lglfw -lglad -lvmm
+LDFLAGS += -lm -lglfw
 REMOVE = rm -rf
 TARGET_EXT = 
 endif

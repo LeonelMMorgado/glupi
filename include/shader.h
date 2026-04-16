@@ -12,7 +12,6 @@
 typedef struct _shader {
     GLuint program, fragment, vertex;
 } Shader;
-
 GLuint make_shader(const char *path, GLenum shader_type);
 Shader *shader_create(const char * vert_path, const char * frag_path);
 void shader_use(Shader *program);
