@@ -11,15 +11,13 @@ Define functions to run on initialize, update, draw and on exit. The program exp
 
 
 # TODO
-- Update mesh reader
-
-- Read cube
-
-- Test shader with cube
-
 - State input doesnt stop
 
 - change model entity
+
+- OpenAL Audio
+
+- Dettach from glad/glfw
 
 - button read
 
